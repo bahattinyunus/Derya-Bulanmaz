@@ -4,104 +4,207 @@
     "text": "Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.",
     "author": "Risale-i Nur Külliyatı",
     "theme": "Metanet & Sarsılmazlık",
-    "tag": "derya"
+    "tag": "derya",
+    "context": "Kastamonu Lahikası & 28. Lem'a"
   },
   {
     "id": 2,
     "text": "Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok. Eğer O kabul etse, bütün halk reddetse tesiri yok.",
     "author": "Bediüzzaman Said Nursî",
     "theme": "İhlas & Hürriyet",
-    "tag": "ihlas"
+    "tag": "ihlas",
+    "context": "İhlas Risalesi (21. Lem'a)"
   },
   {
     "id": 3,
     "text": "İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır. Başkalarına saldıranlar, aslında kendi zindanlarının parmaklıklarını dövenlerdir.",
     "author": "Carl Gustav Jung",
-    "theme": "İçsel Boşluk",
-    "tag": "psikoloji"
+    "theme": "İçsel Boşluk & Gölge",
+    "tag": "felsefe",
+    "context": "Arketipler ve Bilinçdışı"
   },
   {
     "id": 4,
     "text": "Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır.",
     "author": "Arthur Schopenhauer",
     "theme": "Kesret & Dedikodu",
-    "tag": "felsefe"
+    "tag": "felsefe",
+    "context": "Yaşam Bilgeliği Üzerine Aforizmalar"
   },
   {
     "id": 5,
     "text": "Büyük beyinler fikirleri tartışır, orta beyinler olayları tartışır, küçük beyinler insanları tartışır.",
     "author": "Eleanor Roosevelt",
     "theme": "Ufuk & Vizyon",
-    "tag": "bilgelik"
+    "tag": "felsefe",
+    "context": "Karakter ve Zihin Seviyeleri"
   },
   {
     "id": 6,
     "text": "Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar.",
     "author": "Jean-Jacques Rousseau",
-    "theme": "Eylemsizlik",
-    "tag": "elestiri"
+    "theme": "Eylemsizlik & Sinizm",
+    "tag": "felsefe",
+    "context": "Toplumsal Eleştiri"
   },
   {
     "id": 7,
     "text": "Kitle asla en iyi üyelerinin seviyesine çıkamaz; o her zaman en alt seviyedekilerin hizasına inerek dengelenir.",
     "author": "Friedrich Nietzsche",
     "theme": "Sürü Psikolojisi",
-    "tag": "kitle"
+    "tag": "felsefe",
+    "context": "Böyle Buyurdu Zerdüşt"
   },
   {
     "id": 8,
     "text": "Senin dünyaya bakan penceren kirli ise, benim açan çiçeklerim sana çamur görünür.",
     "author": "Mevlânâ Celâleddîn-i Rûmî",
     "theme": "Hased & Bakış Açısı",
-    "tag": "irfan"
+    "tag": "tasavvuf",
+    "context": "Mesnevi-i Manevi"
   },
   {
     "id": 9,
-    "text": "İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.",
-    "author": "İbn Ataullah el-İskenderî",
-    "theme": "Kalbi İstiklal",
-    "tag": "tasavvuf"
+    "text": "Deniz köpeğin ağzını yıkamasıyla murdar olmaz; güneş bir örümceğin tükürüğüyle kararmaz.",
+    "author": "Mevlânâ Celâleddîn-i Rûmî",
+    "theme": "Hakikatin Saflığı",
+    "tag": "tasavvuf",
+    "context": "Mesnevi, Cilt 3"
   },
   {
     "id": 10,
-    "text": "Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar.",
-    "author": "Lao Tzu",
-    "theme": "İçsel Huzur",
-    "tag": "tao"
+    "text": "İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.",
+    "author": "İbn Ataullah el-İskenderî",
+    "theme": "Kalbi İstiklal",
+    "tag": "tasavvuf",
+    "context": "el-Hikemü'l-Atâiyye"
   },
   {
     "id": 11,
-    "text": "Sessizlik, en güçlü çığlıktır.",
-    "author": "Sun Tzu",
-    "theme": "Lisan-ı Hal",
-    "tag": "strateji"
+    "text": "Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar.",
+    "author": "Lao Tzu",
+    "theme": "İçsel Huzur & Wu Wei",
+    "tag": "stoa",
+    "context": "Tao Te Ching"
   },
   {
     "id": 12,
-    "text": "Karanlığa sövmektense, bir mum yak.",
-    "author": "Konfüçyüs",
-    "theme": "Müsbet Hareket",
-    "tag": "eylem"
+    "text": "En üstün erdem su gibidir. Su her varlığa menfaat sağlar ama hiçbir şeyle çekişmez; herkesin küçümsediği alçak yerlere akar.",
+    "author": "Lao Tzu",
+    "theme": "Tevazu ve Sarsılmazlık",
+    "tag": "stoa",
+    "context": "Tao Te Ching, Bölüm 8"
   },
   {
     "id": 13,
-    "text": "Arı inler bal içinde...",
-    "author": "Anadolu İrfanı",
-    "theme": "Eserin İnşası",
-    "tag": "uretim"
+    "text": "Sessizlik, en güçlü çığlıktır.",
+    "author": "Sun Tzu",
+    "theme": "Lisan-ı Hal & Strateji",
+    "tag": "derya",
+    "context": "Savaş Sanatı"
   },
   {
     "id": 14,
-    "text": "Dervişlik dedikleri hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil.",
-    "author": "Yunus Emre",
-    "theme": "Öz & Hakikat",
-    "tag": "tasavvuf"
+    "text": "Karanlığa sövmektense, bir mum yak.",
+    "author": "Konfüçyüs",
+    "theme": "Müsbet Hareket",
+    "tag": "derya",
+    "context": "Konuşmalar (Analektler)"
   },
   {
     "id": 15,
+    "text": "Arı inler bal içinde...",
+    "author": "Anadolu İrfanı",
+    "theme": "Eserin İnşası & Mahviyet",
+    "tag": "tasavvuf",
+    "context": "Geleneksel İrfan Sözü"
+  },
+  {
+    "id": 16,
+    "text": "Dervişlik dedikleri hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil.",
+    "author": "Yunus Emre",
+    "theme": "Öz & Gösterişsizlik",
+    "tag": "tasavvuf",
+    "context": "Divan-ı Yunus"
+  },
+  {
+    "id": 17,
     "text": "Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir.",
     "author": "Marcus Aurelius",
     "theme": "Merhamet Makamı",
-    "tag": "stoa"
+    "tag": "stoa",
+    "context": "Kendime Düşünceler, VI. 6"
+  },
+  {
+    "id": 18,
+    "text": "Taş havaya fırlatıldığında yükselmekle bir kazanç elde etmez; yere düşmekle de hiçbir şey kaybetmez.",
+    "author": "Marcus Aurelius",
+    "theme": "Sarsılmazlık & Metanet",
+    "tag": "stoa",
+    "context": "Kendime Düşünceler, IX. 17"
+  },
+  {
+    "id": 19,
+    "text": "Seni kızdıran şey insanların hareketleri değil; o hareketler hakkında kurduğun kendi yargılarındır. O yargıyı kaldır, kızgınlık da yok olur.",
+    "author": "Marcus Aurelius",
+    "theme": "Zihinsel Zırh",
+    "tag": "stoa",
+    "context": "Kendime Düşünceler, XII. 25"
+  },
+  {
+    "id": 20,
+    "text": "Bazı şeyler bizim elimizdedir, bazı şeyler ise elimizde değildir. Başkalarının hakkımızdaki fikirleri elimizde olmayan şeylerdendir; öyleyse onların kalbimizi incitmesine izin vermemeliyiz.",
+    "author": "Epiktetos",
+    "theme": "Kontrol İkiliği",
+    "tag": "stoa",
+    "context": "Encheiridion (El Kitabı), I"
+  },
+  {
+    "id": 21,
+    "text": "İnsanların tüm eylemlerinin altında tek bir saik yatar: Kederi, hüznü ve içsel anlamsızlığı kovmak. Saldırganlık, kendi kederinden kaçışın aciz bir feryadıdır.",
+    "author": "İbn Hazm",
+    "theme": "Nefsin Tahlili",
+    "tag": "tasavvuf",
+    "context": "el-Ahlâk ve's-Siyer"
+  },
+  {
+    "id": 22,
+    "text": "Hasetçiyi cezalandırmaya kalkma; zira o zaten senin sahip olduğun nimeti her gördüğünde kendi ciğerini dağlayarak en büyük cezayı çekmektedir.",
+    "author": "İmam Gazali",
+    "theme": "Hasedin Çöküşü",
+    "tag": "tasavvuf",
+    "context": "İhyâu Ulûmi'd-Dîn (Âfâtü'l-Kalb)"
+  },
+  {
+    "id": 23,
+    "text": "Bizim vazifemiz müsbet hareket etmektir, menfî hareket değildir. Rıza-yı İlâhîye göre sırf hizmet-i imaniyeyi yapmaktır; vazife-i İlâhiyeye karışmamaktır.",
+    "author": "Bediüzzaman Said Nursî",
+    "theme": "Müsbet Hareket Kanunu",
+    "tag": "ihlas",
+    "context": "Emirdağ Lahikası (Son Ders)"
+  },
+  {
+    "id": 24,
+    "text": "İnsanlar neyi arzulayacaklarını diğer insanları taklit ederek öğrenirler. Bu taklitçi arzu çatışma doğurur ve kalabalık biriken hasedini bir masuma akıtarak teselli bulur.",
+    "author": "René Girard",
+    "theme": "Mimetik Teori & Linç",
+    "tag": "felsefe",
+    "context": "Günah Keçisi (Le Bouc Émissaire)"
+  },
+  {
+    "id": 25,
+    "text": "Hınç (Ressentiment), yaratıcı eylem gücünden yoksun olanların, hayata ve üretenlere karşı beslediği sinsi, pasif-agresif zehirdir.",
+    "author": "Friedrich Nietzsche",
+    "theme": "Hınç Psikolojisi",
+    "tag": "felsefe",
+    "context": "Ahlakın Soykütüğü"
+  },
+  {
+    "id": 26,
+    "text": "Sessizlik, ruhun kendi derinliklerine inip hakikatle yüzleştiği tek mukaddes atölyedir.",
+    "author": "Søren Kierkegaard",
+    "theme": "Sükunetin Gücü",
+    "tag": "felsefe",
+    "context": "Korku ve Titreme"
   }
 ]

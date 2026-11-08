@@ -742,107 +742,48 @@ function initQuotesAndCards() {
   const filterBtns = document.querySelectorAll('.quote-filter-btn');
   const exportCanvas = document.getElementById('exportCardCanvas');
 
-  // Manifestodaki tüm hakikat incileri
-  const quotesData = [
-    {
-      id: 1,
-      text: 'Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.',
-      author: 'Risale-i Nur Külliyatı',
-      tag: 'derya',
-      theme: 'Metanet & Sarsılmazlık'
-    },
-    {
-      id: 2,
-      text: 'Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok.',
-      author: 'Bediüzzaman Said Nursî',
-      tag: 'ihlas',
-      theme: 'İhlas & Hürriyet'
-    },
-    {
-      id: 3,
-      text: 'İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır.',
-      author: 'Carl Gustav Jung',
-      tag: 'felsefe',
-      theme: 'İçsel Boşluk'
-    },
-    {
-      id: 4,
-      text: 'Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır.',
-      author: 'Arthur Schopenhauer',
-      tag: 'felsefe',
-      theme: 'Kesret Kaosu'
-    },
-    {
-      id: 5,
-      text: 'Büyük beyinler fikirleri tartışır, orta beyinler olayları, küçük beyinler insanları tartışır.',
-      author: 'Eleanor Roosevelt',
-      tag: 'felsefe',
-      theme: 'Ufuk & Vizyon'
-    },
-    {
-      id: 6,
-      text: 'Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar.',
-      author: 'Jean-Jacques Rousseau',
-      tag: 'felsefe',
-      theme: 'Eylemsizlik'
-    },
-    {
-      id: 7,
-      text: 'Kitle asla en iyi üyelerinin seviyesine çıkamaz; o her zaman en alt seviyedekilerin hizasına inerek dengelenir.',
-      author: 'Friedrich Nietzsche',
-      tag: 'felsefe',
-      theme: 'Sürü Psikolojisi'
-    },
-    {
-      id: 8,
-      text: 'Senin dünyaya bakan penceren kirli ise, benim açan çiçeklerim sana çamur görünür.',
-      author: 'Mevlânâ Celâleddîn-i Rûmî',
-      tag: 'tasavvuf',
-      theme: 'İrfan & Gönül'
-    },
-    {
-      id: 9,
-      text: 'İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.',
-      author: 'İbn Ataullah el-İskenderî',
-      tag: 'tasavvuf',
-      theme: 'Kalbi İstiklal'
-    },
-    {
-      id: 10,
-      text: 'Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar.',
-      author: 'Lao Tzu',
-      tag: 'stoa',
-      theme: 'İçsel Huzur'
-    },
-    {
-      id: 11,
-      text: 'Sessizlik, en güçlü çığlıktır.',
-      author: 'Sun Tzu',
-      tag: 'derya',
-      theme: 'Lisan-ı Hal'
-    },
-    {
-      id: 12,
-      text: 'Karanlığa sövmektense, bir mum yak.',
-      author: 'Konfüçyüs',
-      tag: 'derya',
-      theme: 'Müsbet Hareket'
-    },
-    {
-      id: 13,
-      text: 'Arı inler bal içinde...',
-      author: 'Anadolu İrfanı',
-      tag: 'tasavvuf',
-      theme: 'Eserin İnşası'
-    },
-    {
-      id: 14,
-      text: 'Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir.',
-      author: 'Marcus Aurelius',
-      tag: 'stoa',
-      theme: 'Merhamet Makamı'
-    }
+  // Manifestodaki tüm hakikat incileri (Genişletilmiş 26 Hikmet)
+  let quotesData = [
+    { id: 1, text: 'Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.', author: 'Risale-i Nur Külliyatı', tag: 'derya', theme: 'Metanet & Sarsılmazlık' },
+    { id: 2, text: 'Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok.', author: 'Bediüzzaman Said Nursî', tag: 'ihlas', theme: 'İhlas & Hürriyet' },
+    { id: 3, text: 'İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır.', author: 'Carl Gustav Jung', tag: 'felsefe', theme: 'İçsel Boşluk & Gölge' },
+    { id: 4, text: 'Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır.', author: 'Arthur Schopenhauer', tag: 'felsefe', theme: 'Kesret Kaosu' },
+    { id: 5, text: 'Büyük beyinler fikirleri tartışır, orta beyinler olayları, küçük beyinler insanları tartışır.', author: 'Eleanor Roosevelt', tag: 'felsefe', theme: 'Ufuk & Vizyon' },
+    { id: 6, text: 'Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar.', author: 'Jean-Jacques Rousseau', tag: 'felsefe', theme: 'Eylemsizlik' },
+    { id: 7, text: 'Kitle asla en iyi üyelerinin seviyesine çıkamaz; o her zaman en alt seviyedekilerin hizasına inerek dengelenir.', author: 'Friedrich Nietzsche', tag: 'felsefe', theme: 'Sürü Psikolojisi' },
+    { id: 8, text: 'Senin dünyaya bakan penceren kirli ise, benim açan çiçeklerim sana çamur görünür.', author: 'Mevlânâ Celâleddîn-i Rûmî', tag: 'tasavvuf', theme: 'İrfan & Gönül' },
+    { id: 9, text: 'Deniz köpeğin ağzını yıkamasıyla murdar olmaz; güneş bir örümceğin tükürüğüyle kararmaz.', author: 'Mevlânâ Celâleddîn-i Rûmî', tag: 'tasavvuf', theme: 'Hakikatin Saflığı' },
+    { id: 10, text: 'İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.', author: 'İbn Ataullah el-İskenderî', tag: 'tasavvuf', theme: 'Kalbi İstiklal' },
+    { id: 11, text: 'Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar.', author: 'Lao Tzu', tag: 'stoa', theme: 'İçsel Huzur' },
+    { id: 12, text: 'En üstün erdem su gibidir. Su her varlığa menfaat sağlar ama hiçbir şeyle çekişmez; herkesin küçümsediği alçak yerlere akar.', author: 'Lao Tzu', tag: 'stoa', theme: 'Wu Wei & Tevazu' },
+    { id: 13, text: 'Sessizlik, en güçlü çığlıktır.', author: 'Sun Tzu', tag: 'derya', theme: 'Lisan-ı Hal' },
+    { id: 14, text: 'Karanlığa sövmektense, bir mum yak.', author: 'Konfüçyüs', tag: 'derya', theme: 'Müsbet Hareket' },
+    { id: 15, text: 'Arı inler bal içinde...', author: 'Anadolu İrfanı', tag: 'tasavvuf', theme: 'Eserin İnşası' },
+    { id: 16, text: 'Dervişlik dedikleri hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil.', author: 'Yunus Emre', tag: 'tasavvuf', theme: 'Öz & Hakikat' },
+    { id: 17, text: 'Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Merhamet Makamı' },
+    { id: 18, text: 'Taş havaya fırlatıldığında yükselmekle bir kazanç elde etmez; yere düşmekle de hiçbir şey kaybetmez.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Sarsılmazlık' },
+    { id: 19, text: 'Seni kızdıran şey insanların hareketleri değil; o hareketler hakkında kurduğun kendi yargılarındır.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Zihinsel Zırh' },
+    { id: 20, text: 'Başkalarının hakkımızdaki fikirleri elimizde olmayan şeylerdendir; öyleyse onların kalbimizi incitmesine izin vermemeliyiz.', author: 'Epiktetos', tag: 'stoa', theme: 'Kontrol İkiliği' },
+    { id: 21, text: 'İnsanların tüm eylemlerinin altında tek bir saik yatar: Kederi ve içsel anlamsızlığı kovmak.', author: 'İbn Hazm', tag: 'tasavvuf', theme: 'Nefsin Tahlili' },
+    { id: 22, text: 'Hasetçiyi cezalandırmaya kalkma; zira o zaten senin nimetini her gördüğünde kendi ciğerini dağlamaktadır.', author: 'İmam Gazali', tag: 'tasavvuf', theme: 'Hasedin Çöküşü' },
+    { id: 23, text: 'Bizim vazifemiz müsbet hareket etmektir, menfî hareket değildir. Sırf hizmeti yapmak, vazife-i İlâhiyeye karışmamaktır.', author: 'Bediüzzaman Said Nursî', tag: 'ihlas', theme: 'Müsbet Hareket' },
+    { id: 24, text: 'İnsanlar neyi arzulayacaklarını diğer insanları taklit ederek öğrenirler. Bu taklitçi arzu çatışma ve linç doğurur.', author: 'René Girard', tag: 'felsefe', theme: 'Mimetik Linç' },
+    { id: 25, text: 'Hınç (Ressentiment), yaratıcı eylem gücünden yoksun olanların, üretenlere karşı beslediği sinsi zehirdir.', author: 'Friedrich Nietzsche', tag: 'felsefe', theme: 'Hınç Psikolojisi' },
+    { id: 26, text: 'Sessizlik, ruhun kendi derinliklerine inip hakikatle yüzleştiği tek mukaddes atölyedir.', author: 'Søren Kierkegaard', tag: 'felsefe', theme: 'Sükunetin Gücü' }
   ];
+
+  // data/quotes.json dosyasından asenkron yüklemeyi de dene
+  fetch('./data/quotes.json')
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        quotesData = data;
+        renderCards();
+      }
+    })
+    .catch(() => {
+      // Yerel dosya sistemi (file://) ise gömülü liste zaten devrededir
+    });
 
   function renderCards(filter = 'all') {
     if (!container) return;
