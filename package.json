@@ -1,0 +1,38 @@
+{
+  "name": "derya-bulanmaz",
+  "version": "1.0.0",
+  "description": "Kesretin Gürültüsünden Vahdetin İnşasına — Felsefi Manifesto ve Dijital İrfan Portalı",
+  "main": "cli.js",
+  "bin": {
+    "derya": "./cli.js"
+  },
+  "scripts": {
+    "start": "node cli.js serve 3000",
+    "serve": "node cli.js serve 3000",
+    "quote": "node cli.js quote",
+    "manifesto": "node cli.js manifesto",
+    "focus": "node cli.js focus 25",
+    "test": "node cli.js quote"
+  },
+  "keywords": [
+    "derya-bulanmaz",
+    "manifesto",
+    "felsefe",
+    "tasavvuf",
+    "stoa",
+    "deep-work",
+    "focus",
+    "ihlas",
+    "musbet-hareket"
+  ],
+  "author": "Bahattin Yunus",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahattinyunus/Derya-Bulanmaz.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bahattinyunus/Derya-Bulanmaz/issues"
+  },
+  "homepage": "https://github.com/bahattinyunus/Derya-Bulanmaz#readme"
+}

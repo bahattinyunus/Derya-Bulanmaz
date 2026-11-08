@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "text": "Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.",
+    "author": "Risale-i Nur Külliyatı",
+    "theme": "Metanet & Sarsılmazlık",
+    "tag": "derya"
+  },
+  {
+    "id": 2,
+    "text": "Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok. Eğer O kabul etse, bütün halk reddetse tesiri yok.",
+    "author": "Bediüzzaman Said Nursî",
+    "theme": "İhlas & Hürriyet",
+    "tag": "ihlas"
+  },
+  {
+    "id": 3,
+    "text": "İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır. Başkalarına saldıranlar, aslında kendi zindanlarının parmaklıklarını dövenlerdir.",
+    "author": "Carl Gustav Jung",
+    "theme": "İçsel Boşluk",
+    "tag": "psikoloji"
+  },
+  {
+    "id": 4,
+    "text": "Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır.",
+    "author": "Arthur Schopenhauer",
+    "theme": "Kesret & Dedikodu",
+    "tag": "felsefe"
+  },
+  {
+    "id": 5,
+    "text": "Büyük beyinler fikirleri tartışır, orta beyinler olayları tartışır, küçük beyinler insanları tartışır.",
+    "author": "Eleanor Roosevelt",
+    "theme": "Ufuk & Vizyon",
+    "tag": "bilgelik"
+  },
+  {
+    "id": 6,
+    "text": "Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar.",
+    "author": "Jean-Jacques Rousseau",
+    "theme": "Eylemsizlik",
+    "tag": "elestiri"
+  },
+  {
+    "id": 7,
+    "text": "Kitle asla en iyi üyelerinin seviyesine çıkamaz; o her zaman en alt seviyedekilerin hizasına inerek dengelenir.",
+    "author": "Friedrich Nietzsche",
+    "theme": "Sürü Psikolojisi",
+    "tag": "kitle"
+  },
+  {
+    "id": 8,
+    "text": "Senin dünyaya bakan penceren kirli ise, benim açan çiçeklerim sana çamur görünür.",
+    "author": "Mevlânâ Celâleddîn-i Rûmî",
+    "theme": "Hased & Bakış Açısı",
+    "tag": "irfan"
+  },
+  {
+    "id": 9,
+    "text": "İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.",
+    "author": "İbn Ataullah el-İskenderî",
+    "theme": "Kalbi İstiklal",
+    "tag": "tasavvuf"
+  },
+  {
+    "id": 10,
+    "text": "Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar.",
+    "author": "Lao Tzu",
+    "theme": "İçsel Huzur",
+    "tag": "tao"
+  },
+  {
+    "id": 11,
+    "text": "Sessizlik, en güçlü çığlıktır.",
+    "author": "Sun Tzu",
+    "theme": "Lisan-ı Hal",
+    "tag": "strateji"
+  },
+  {
+    "id": 12,
+    "text": "Karanlığa sövmektense, bir mum yak.",
+    "author": "Konfüçyüs",
+    "theme": "Müsbet Hareket",
+    "tag": "eylem"
+  },
+  {
+    "id": 13,
+    "text": "Arı inler bal içinde...",
+    "author": "Anadolu İrfanı",
+    "theme": "Eserin İnşası",
+    "tag": "uretim"
+  },
+  {
+    "id": 14,
+    "text": "Dervişlik dedikleri hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil.",
+    "author": "Yunus Emre",
+    "theme": "Öz & Hakikat",
+    "tag": "tasavvuf"
+  },
+  {
+    "id": 15,
+    "text": "Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir.",
+    "author": "Marcus Aurelius",
+    "theme": "Merhamet Makamı",
+    "tag": "stoa"
+  }
+]
