@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="assets/banner.png" alt="Derya Bulanmaz Banner" width="100%" style="border-radius: 14px; max-width: 1000px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);" />
+
+<br/><br/>
+
 # 🌊 DERYA BULANMAZ
 ### Kesretin Gürültüsünden Vahdetin İnşasına
 #### Felsefi, Sosyolojik, Psikolojik ve İrfani Bir Başkaldırı ve Sarsılmaz İnşa Risalesi
