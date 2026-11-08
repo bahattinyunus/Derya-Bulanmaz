@@ -132,6 +132,14 @@ Logoterapinin kurucusu Viktor Frankl, *İnsanın Anlam Arayışı* eserinde mode
 
 ---
 
+<p align="center">
+  <img src="assets/kesret_vs_vahdet.png" alt="Kesretin Gürültüsü ve Vahdetin Sükuneti" width="100%" style="border-radius: 12px; max-width: 900px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
+  <br/>
+  <em>«Kalabalıkların (Kesret) kaosu, ancak hakikate adanmış bir zihnin (Vahdet) sarsılmazlığında kendi hiçliğiyle yüzleşir.»</em>
+</p>
+
+---
+
 ## 3. Çürüyen Kalabalığın Anatomisi: Neden Saldırırlar?
 
 Kalabalıkların saldırma mekanizması rastlantısal değildir; belirli sosyo-psikolojik evrelerden geçer:
@@ -216,6 +224,12 @@ $$\text{"Ben yukarı çıkamıyorsam, kimse yukarı çıkmamalı."}$$
 
 ## 4. Zırh ve Korunma: İhlas Sırrı ile Hürriyet
 
+<p align="center">
+  <img src="assets/ihlas_zirhi.png" alt="İhlas Zırhı ve Sarsılmaz Kalkan" width="100%" style="border-radius: 12px; max-width: 900px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
+  <br/>
+  <em>«Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok. Bir divane çamur atsa, derya bulanmaz.»</em>
+</p>
+
 ### 4.1. Onaylanma Bağımlılığı: Ruhun En Zayıf Halkası
 Bir insanın ruhunu köleleştirmenin en garantili yolu, onu **dışarıdan gelecek takdire bağımlı** kılmaktır.
 - Alkış bekleyen, yergiden kaçamaz.
@@ -271,6 +285,13 @@ Hedefine ulaşamayan kin ve haset, fırlatıldığı yaya geri döner.
 > *"Karanlığa sövmektense, bir mum yak."* — **Konfüçyüs**
 
 ### 5.3. 3. Aşama: Eserin İnşası ve "Arının Bal İçinde İnlemesi"
+
+<p align="center">
+  <img src="assets/eserin_insasi.png" alt="Eserin İnşası ve Sessiz Zafer" width="100%" style="border-radius: 12px; max-width: 900px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
+  <br/>
+  <em>«Arı inler bal içinde... Eser tamamlandığında, onların çıkardığı tek ses, sizin sükunetinizde yankılanan kendi hiçlikleri olacaktır.»</em>
+</p>
+
 Anadolu irfanının o eşsiz mısraı her şeyi özetler:
 > *"Arı inler bal içinde..."*
 
