@@ -410,47 +410,79 @@ Bu felsefe, depomuzda pratik ve modern yazılım araçlarıyla canlandırılmı�
 
 ```
 Derya-Bulanmaz/
-├── index.html              # Modern, glassmorphism tasarımlı İnteraktif Web Portalı
-├── app.js                  # Canvas okyanus motoru, Web Audio sentezleyici, Odak ve Günlük mantığı
-├── styles.css              # Tipografi, altın oran, nefes animasyonları ve özel temalar
-├── cli.js                  # Node.js tabanlı zengin renkli (ANSI) terminal arayüzü
-├── derya.py                # Python 3 tabanlı CLI companion ve yerel web sunucusu
+├── index.html              # Modern, glassmorphism tasarımlı İnteraktif Web Portalı & PWA
+├── app.js                  # Canvas okyanus motoru, 4 ses manzaralı Web Audio API, Matris ve Günlük motoru
+├── styles.css              # Tipografi, 3 tema (Okyanus, Obsidiyen, Parşömen), nefes animasyonları
+├── cli.js                  # Node.js tabanlı zengin renkli (ANSI) terminal arayüzü & interaktif CLI
+├── derya.py                # Python 3 tabanlı tam özellikli CLI companion ve yerel web sunucusu
+├── manifest.webmanifest    # PWA (Progressive Web App) çevrimdışı kurulum manifestosu
+├── sw.js                   # Service Worker ile %100 çevrimdışı (offline-first) çalışma desteği
 ├── data/
 │   ├── manifesto.json      # Manifestonun yapılandırılmış JSON veritabanı
-│   └── quotes.json         # 26 adet açıklamalı ve tematik hikmet vecizesi
-├── package.json            # NPM bağımlılık ve script tanımları
+│   ├── quotes.json         # 42 adet açıklamalı ve tematik hikmet vecizesi
+│   ├── dilemmas.json       # 6 adet derin vaka çözümü içeren Müsbet Hareket Matrisi
+│   └── journal.json        # Terminal ve yerel tefekkür günlüğü kayıt havuzu
+├── test/
+│   └── integrity.test.js   # Veri bütünlüğü ve CLI doğrulama test paketi
+├── package.json            # NPM script ve paket tanımları
 ├── .gitignore              # Git yapılandırma dosyası
 ├── LICENSE                 # MIT Açık Kaynak Lisansı
 └── README.md               # Bu anıtsal manifesto ve dokümantasyon
 ```
 
-### Web Portalı Mimarisi
-- **Doğrudan Çalışır:** Herhangi bir derleme (build) veya npm bağımlılığı gerektirmez. `index.html` dosyasını tarayıcınızda çift tıklayarak anında açabilirsiniz.
-- **Canvas Okyanus Motoru:** Ziyaretçinin ekranında matematiksel sinüs dalgalarıyla okyanus akıntıları oluşturur. Tıklama veya metin fırlatma ile çamur partikülleri üretilir; dalgalar bu partikülleri temizleyip yok eder.
-- **Web Audio API Ambiyans Sentezleyici:** Harici MP3 indirmez. Pembe gürültü tamponları (Pink Noise), Alçak Geçiren Filtreler (Lowpass BiquadFilter) ve LFO modülasyonu ile tamamen tarayıcının ses işlemcisinde gerçekçi okyanus dalgaları ve 432 Hz derin frekans tonu üretir.
-- **Canvas Sosyal Kart Üreteci:** 1080x1080 piksel çözünürlükte, altın çerçeveli ve tipografik alıntı kartlarını istemci tarafında render edip PNG olarak indirir.
+### Web Portalı Mimarisi (v2.0)
+- **Doğrudan ve Bağımsız Çalışır:** Herhangi bir derleme (build) veya harici paket yükleme gerektirmez. `index.html` dosyasını tarayıcınızda çift tıklayarak anında açabilirsiniz.
+- **PWA & Tam Çevrimdışı (Offline-First):** `sw.js` ve `manifest.webmanifest` sayesinde internet bağlantısı olmadan masaüstü veya mobil cihazınıza uygulama olarak yüklenebilir.
+- **3 Görsel Tema:** *Okyanus Gece* (Varsayılan), *Saf Obsidiyen* (AMOLED Siyahı) ve *İrfan Parşömeni* (Antik Sepia) modları arasında tek tıkla (`T` kısayolu) geçiş imkanı.
+- **Canvas Okyanus & İnci Dönüşümü:** Matematiksel sinüs dalgalarıyla okyanus akıntıları oluşturur. Dışarıdan atılan laf ve çamur partikülleri suyun dibinde çözünerek parıldayan altın incilere ve hakikat ışığına dönüşür.
+- **Web Audio API 4'lü Ambiyans Sentezleyici:** Harici MP3 kullanmaz. Pembe gürültü, LFO ve osilatörlerle sentezlenen 4 ses manzarası:
+  1. 🌊 *Derya Dalgaları*
+  2. 🔔 *432 Hz Solfeggio & Ney Çanağı*
+  3. 🌧️ *Dingin Gece Yağmuru*
+  4. 🧠 *Kahverengi Gürültü (Derin Odak)*
+- **Müsbet Hareket Matrisi & Vaka Çözücü:** Linç, emek gaspı, yakın çevre alayı, haset ve tükenmişlik krizlerini 4 kademeli protokolle çözer; tek tıkla günlüğe aktarır.
+- **Klavye Kısayolları:** `Space` (Odak Sayacı), `M` (Sessize Al), `T` (Tema Değiştir), `Z` (Zen Modu), `?` (Kısayol Kılavuzu).
 
 ### Terminal Yoldaşı (Node.js & Python CLI)
 ```bash
-# 1. Hikmet ve Aforizma Çek
+# 1. Hikmet ve Aforizma Çek (Filtreli veya Rastgele)
 node cli.js quote
-# veya
-python derya.py quote
+python derya.py quote ihlas
 
-# 2. Manifestoyu Terminalde Oku
-node cli.js manifesto
-# veya
-python derya.py manifesto
+# 2. Gürültü Kalkanını Kuşan (Örn: Linç, Haset, Çevre, Kibir...)
+node cli.js shield linc
+python derya.py shield haset
 
-# 3. Terminal Odak Sayacını Başlat (Örn: 25 Dk)
+# 3. Müsbet Hareket Matrisi & Vaka Çözücüyü Çalıştır
+node cli.js matrix linc_ve_iftira
+python derya.py matrix 1
+
+# 4. Terminalde Nefes Rehberini Başlat (4-7-8, Kutu, Denge)
+node cli.js breathe 478
+python derya.py breathe kutu
+
+# 5. Terminal Derin Odak Sayacını Başlat (Örn: 25 Dk)
 node cli.js focus 25
-# veya
 python derya.py focus 25
 
-# 4. Yerel Web Sunucusunu Başlat (http://localhost:3000)
+# 6. Terminal Tefekkür Günlüğüne Kayıt Ekle veya Oku
+node cli.js journal yaz
+python derya.py journal oku
+
+# 7. ASCII Hikmet Kartı Oluştur
+node cli.js card 2
+python derya.py card 1
+
+# 8. İrfani ve Teknik Portal Metriklerini Gör
+node cli.js stats
+python derya.py stats
+
+# 9. Yerel Web Sunucusunu Başlat (http://localhost:3000)
 node cli.js serve
-# veya
 python derya.py serve
+
+# 10. Bütünlük Testlerini Çalıştır
+node test/integrity.test.js
 ```
 
 ---

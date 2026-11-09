@@ -1,0 +1,128 @@
+[
+  {
+    "id": "linc_ve_iftira",
+    "title": "Sosyal Medyada veya Toplulukta Haksız Linç & Karalama",
+    "category": "Dış Tehdit",
+    "badge": "Yüksek Gürültü",
+    "summary": "Kalabalıkların ya da dijital güruhların ürettiğiniz eseri, şahsınızı veya niyetinizi çarpıtarak topluca saldırması.",
+    "diagnostic": "René Girard'ın 'Mimetik Teori'si uyarınca kitleler kendi iç çatışmalarını ve eylemsizlik suçluluklarını dışarıdan bir günah keçisine boşaltırlar. Gustave Le Bon'un belirttiği gibi kitle içinde bireysel akıl kaybolur; yerini kör bir histeri alır. Bu şahsi değil, kitle psikolojisinin otomatik refleksidir.",
+    "enfus_mirror": "Nefsim şu an neden bu kadar yaralandı? Çünkü gizli bir onaylanma beklentim vardı. Derya olan bir ruh, bardağın alacağı bir kaşık çamurla bulanmaz. Hatan varsa hakikate teslim ol; iftira ise bil ki kir güneşin ışığına yapışmaz.",
+    "lisan_i_hal": "Tek kelime cevap verme. Savunma metni yazma, laf yarıştırma. Bildirimleri sustur. Kavgaya girmek, gürültücünün bataklığına inip onun kurallarıyla boğulmaktır. Sessizlik, zalimin yüzüne inen en asil hakikat şilllesidir.",
+    "eser_insasi": "Bütün bu haksız saldırının doğurduğu adrenalini ve enerjiyi dönüştür. Hemen 45 dakikalık bir derin inşa (Deep Work) seansı başlat. Eserine öyle bir tuğla daha ekle ki, o tuğla onların binlerce gürültüsünden daha gür ses çıkarsın.",
+    "merhamet_makami": "Sana saldıranların gece yastığa baş koyduklarında hissettikleri korkunç gayesizlik zindanına acı. Kötülüğe en büyük ceza, onlara benzememektir.",
+    "action_checklist": [
+      "Sosyal medya uygulamalarını 24 saatliğine sessize al veya sil.",
+      "Klavyeden elini çekip 10 derin sükun nefesi al (4-7-8 ritmi).",
+      "Yarım kalan eserinin başına oturup 40 dakika kesintisiz çalış."
+    ],
+    "prescribed_quote": {
+      "text": "Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.",
+      "author": "Risale-i Nur Külliyatı"
+    }
+  },
+  {
+    "id": "emek_gaspi_taklit",
+    "title": "Emeğimin / Fikrimin Çalınması ve Taklit Edilmesi",
+    "category": "Eser ve Üretim",
+    "badge": "Haset & Hırsızlık",
+    "summary": "Gecelerce kafa yorup inşa ettiğiniz fikrin, kodun veya eserin bir başkası tarafından kendisininmiş gibi sahiplenilmesi.",
+    "diagnostic": "Taklit, kifayetsizliğin yeteneğe sunduğu en aciz selamdır. Taklit eden kişi sadece 'yapılmış olanı' kopyalayabilir; onu var eden içsel irfan kaynağını ve deha pınarını asla kopyalayamaz. Kaynak sende oldukça, senden su alanlar kurak kalmaya mahkumdur.",
+    "enfus_mirror": "Eseri kendime mi mal ediyordum, yoksa hakikatin bir tecellisi olarak mı görüyordum? Hakikat mülk edinilmez; ancak hizmet edilir. Eğer kaynağın sahibi hakikat ise, sen yine üretirsin; taklitçi ise kopyaladığıyla tükenir.",
+    "lisan_i_hal": "Hukuki haklarını gerekiyorsa sakin ve profesyonelce koru; fakat enerjini sosyal medyada feryat figan polemiklere harcama. Öfkeyle bağırıp çağırmak sadece taklitçiyi büyütür.",
+    "eser_insasi": "Taklitçinin asla akıl erdiremeyeceği 'Sürüm 2.0'ı inşa etmeye başla. O dünün kopyasıyla meşgulken, sen yarının ufkuna yelken aç. Arı peteği çalanla kavga etmez; yeni çiçeklerin özünü toplamaya uçar.",
+    "merhamet_makami": "Kendi özgün varlığını bulamayıp başkalarının gölgesine sığınan bir ruhun sefaletine bak ve merhamet duy. Onların yetersizlik azabı, sana yeterli bir ibrettir.",
+    "action_checklist": [
+      "Hukuki/resmi gereklilikleri sessizce belgele ve kenara koy.",
+      "Gereksiz polemik başlatma; dikkatini kopyacıya değil, sıradaki büyük özelliğe ver.",
+      "Yeni mimarinin ilk taslağını hemen şimdi çiz."
+    ],
+    "prescribed_quote": {
+      "text": "Arı inler bal içinde... Dışarıdaki sineklerin vızıltısına aldırma; senin vazifen balı inşa etmektir.",
+      "author": "Anadolu İrfanı"
+    }
+  },
+  {
+    "id": "yakin_cevre_alayi",
+    "title": "Yakın Çevre Alayı: 'Neden Bu Kadar Kasıyorsun?'",
+    "category": "Sosyal Baskı",
+    "badge": "Yengeç Sepeti",
+    "summary": "Arkadaş, akraba veya meslektaşların fedakarlıklarınızı küçümsemesi, 'kendini bir şey mi sanıyorsun' demesi.",
+    "diagnostic": "Arthur Schopenhauer ve Friedrich Nietzsche'nin vurguladığı 'Yatay Eşitleme' içgüdüsü devrededir. Senin disiplinli dik yürüyüşün, onların yan gelip yatan uyuşuk vicdanlarına saplanan sivri bir oktur. Seni aşağı çekmeye çalışmaları, kendilerini rahatlatmak içindir.",
+    "enfus_mirror": "Onların onayına muhtaç mıyım? Eğer yola onların alkışıyla çıkmadıysam, onların küçümsemesiyle neden durayım? Kalbimin pusulası fani insanların değişken takdirlerine ayarlı olamaz.",
+    "lisan_i_hal": "Onlarla vizyonunu tartışma, ikna etmeye çalışma. 'Büyük beyinler fikirleri tartışır, küçük beyinler insanları.' Gülümse, konuyu değiştir ve masadan sessizce kalk.",
+    "eser_insasi": "Sözle değil, vücuda getirdiğin somut muvaffakiyetle konuş. Bir gün anlayacaklar; anlamasalar bile hakikat şahittir, o yeter.",
+    "merhamet_makami": "Onlar tembelliğin konforlu uyuşukluğunda kaybolmuş ruhlardır. Onlara kızma; uyanamadıkları gaflet uykusuna acı.",
+    "action_checklist": [
+      "Planlarını ve hayallerini bu kişilere anlatmayı derhal kes.",
+      "Sana enerji veren derin çalışma ortamına çekil.",
+      "Bugünkü çalışma hedefini iki katına çıkar."
+    ],
+    "prescribed_quote": {
+      "text": "Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar.",
+      "author": "Jean-Jacques Rousseau"
+    }
+  },
+  {
+    "id": "vefasizlik_nankorluk",
+    "title": "Büyük İyilik Yapılan Kişilerden Gelen Vefasızlık & Nankörlük",
+    "category": "Gönül Yarası",
+    "badge": "Enfüs İmtihanı",
+    "summary": "Elinden tuttuğunuz, yetiştirdiğiniz veya zor gününde yanında olduğunuz kişilerin sırt dönmesi veya aleyhinize geçmesi.",
+    "diagnostic": "İbn Hazm 'el-Ahlâk ve's-Siyer'de uyarır: İnsanlara yaptığın iyilikten dünyevi bir karşılık veya minnet beklersen, en büyük kederi satın almış olursun. Nankörlük insanın tabiatında vardır; iyilik ancak karşılıksız yapıldığında kutsaldır.",
+    "enfus_mirror": "İhlasımın en büyük testi budur. Ben o iyiliği o şahsın teşekkürü için mi yaptım, yoksa sırf hakikat ve Allah rızası için mi? Eğer rıza için yaptıysam, mükafatı zayi olmadı; zira asıl muhatap insan değil, mutlak hakikattir.",
+    "lisan_i_hal": "Yapılan iyiliği asla başa kakma. 'Ben senin için şunu yapmıştım' deme. İyiliği başa kakmak, ameli yakıp kül eder. Asil bir sessizlikle mesafeni koy.",
+    "eser_insasi": "İnsana değil, gayeye bağlan. Kalbin kırılan yerlerinden yeni bir fedakarlık ve inşa gücü fışkırt. Derya sahile vuran dalgalara küsmez.",
+    "merhamet_makami": "Nankörlük eden kişi, kendi ruhunda vefayı öldürmüş bir zavallıdır. O senden değil, kendi insanlığından eksiltmiştir.",
+    "action_checklist": [
+      "O kişiye karşı içindeki sitem cümlelerini yaz ve yak / sil.",
+      "Bugün tanımadığın birine gizlice karşılıksız bir iyilik yap.",
+      "Yüreğini insanların takdirinden tamamen azat et."
+    ],
+    "prescribed_quote": {
+      "text": "Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok.",
+      "author": "Bediüzzaman Said Nursî"
+    }
+  },
+  {
+    "id": "alkis_bagimliligi",
+    "title": "Alkış, Beğeni & Görülme Hırsının İhlası Zedelemesi",
+    "category": "İçsel Tehlike",
+    "badge": "Gizli Şirk",
+    "summary": "Ürettiğiniz eserden ziyade alacağınız 'like', övgü ve şöhret sarhoşluğuna kapılmak ve bu olmayınca çöküntü yaşamak.",
+    "diagnostic": "İbn Ataullah el-İskenderî 'Hikem'inde der: 'İnsanların övgüsüyle sevinen, onların yergisiyle yıkılmaya mahkumdur.' Beğeni bağımlılığı ruhu dış dünyanın kölesi yapar. Derya kendi derinliğinde zengindir; sahildeki kalabalığın tezahüratına muhtaç değildir.",
+    "enfus_mirror": "Kendime dürüst olmalıyım: Eserimi hakikatin hatırı için mi yapıyorum, yoksa 'bana baksınlar, beni bilsinler' diye mi? Alkışla beslenen ruh, alkış kesilince açlıktan ölür.",
+    "lisan_i_hal": "Mahviyet (görünmezlik) sırrına sarıl. Bir süre anonim kal. İsmini değil, eserin ruhunu öne çıkar.",
+    "eser_insasi": "Sırf kendin ve hakikat için, kimseye göstermeyeceğin gizli bir çalışma yap. Gizli amel, ihlasın en sağlam panzehiridir.",
+    "merhamet_makami": "Dışarıdan alkış dilenen kendi egona merhametle bak ve onu terbiye et: 'Ey nefsim, fani insanların alkışı kabir kapısına kadardır.'",
+    "action_checklist": [
+      "Metrikleri, beğeni sayılarını ve istatistik panellerini kapat.",
+      "Bugün kimseye bahsetmeden 1 saatlik sessiz bir iyilik veya inşa yap.",
+      "İhlas Risalesi'nin 1. Düsturunu oku."
+    ],
+    "prescribed_quote": {
+      "text": "İnsanların seni kınaması veya övmesi kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.",
+      "author": "İbn Ataullah el-İskenderî"
+    }
+  },
+  {
+    "id": "tukenmislik_atalet",
+    "title": "Tükenmişlik, Ağır Dağınıklık & Eylemsizlik Bataklığı",
+    "category": "Zihinsel Kriz",
+    "badge": "Kesret Felci",
+    "summary": "Modern dijital bombardıman altında dikkatin paramparça olması, hiçbir şeye başlayamama ve anlamsızlık hissi.",
+    "diagnostic": "C. G. Jung ve Viktor Frankl'ın teşhisi: Gaye-i hayal (yüce amaç) silikleştiğinde, amigdala ve limbik sistem en ilkel dopamin tuzaklarına esir olur. Dikkat kalıntısı (Attention Residue) prefrontal korteksi felç eder.",
+    "enfus_mirror": "Ben kainatın merkezinde değilim; bütün dünyayı bir günde kurtaramam. Fakat şu an önümdeki tek bir adımı kusursuzca atabilirim. Dağınıklık, geleceğin ağırlığını bugüne taşımaktan doğar.",
+    "lisan_i_hal": "Ekranları kapat, odayı havalandır, yere otur. 5 dakika sadece nefesini izle. Dünyanın sensiz de dönebildiğini fark et ve teslimiyetin sükunetini tat.",
+    "eser_insasi": "Gözünü devasa projelerden çek. Sadece 15 dakikalık mikroskobik bir görev seç: Bir paragraf yaz, tek bir fonksiyonu refactor et, bir sayfa oku. İvme başladıktan sonra arkası gelecektir.",
+    "merhamet_makami": "Yorulan bedenine ve zihnine zulmetme; ona şefkat göster. Dinlenmek de inşanın bir parçasıdır; yeter ki atalete dönüşmesin.",
+    "action_checklist": [
+      "Telefonu uçak moduna al ve başka bir odaya bırak.",
+      "Derya Nefes İstasyonu'nda 5 dakika kutu nefesi yap.",
+      "Sadece 15 dakikalık Pomodoro sayacı başlatıp tek bir göreve odaklan."
+    ],
+    "prescribed_quote": {
+      "text": "Bütün kainatın dağınıklığı, hakikate adanmış tek bir saatin sükunetinde erir. Karanlığa sövmektense, bir mum yak.",
+      "author": "Konfüçyüs & Stoacılar"
+    }
+  }
+]

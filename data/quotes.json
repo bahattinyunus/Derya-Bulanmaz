@@ -206,5 +206,133 @@
     "theme": "Sükunetin Gücü",
     "tag": "felsefe",
     "context": "Korku ve Titreme"
+  },
+  {
+    "id": 27,
+    "text": "Savaş ölünce değil, düşmana benzeyince kaybedilir. Sana kötülük edene kötülükle cevap verirsen, onun ahlaksızlık kalesine asker olursun.",
+    "author": "Aliya İzzetbegoviç",
+    "theme": "Merhamet & Asalet",
+    "tag": "ihlas",
+    "context": "Özgürlüğe Kaçışım"
+  },
+  {
+    "id": 28,
+    "text": "Varlık bir denizdir; hadiseler ve insanlar ise o denizin köpükleridir. Köpüklere takılıp boğulanlar, denizin derinliğindeki incileri göremezler.",
+    "author": "İbnü'l-Arabî",
+    "theme": "Vahdet & Derinlik",
+    "tag": "tasavvuf",
+    "context": "Füsûsü'l-Hikem"
+  },
+  {
+    "id": 29,
+    "text": "Rüzgar hangi yönden eserse essin, gideceği limanı bilmeyen gemiye hiçbir rüzgar fayda vermez. Kendi gayeni inşa et ki kalabalıkların fırtınası seni savuramasın.",
+    "author": "Seneca",
+    "theme": "Gaye-i Hayal & Rota",
+    "tag": "stoa",
+    "context": "Lucilius'a Mektuplar"
+  },
+  {
+    "id": 30,
+    "text": "Bizi en çok üzen şeyler başımıza gelen hadiselerden ziyade, onlar hakkında kafamızda büyüttüğümüz kuruntulardır.",
+    "author": "Seneca",
+    "theme": "Zihinsel Zırh & Dinginlik",
+    "tag": "stoa",
+    "context": "Ruh Dinginliği Üzerine"
+  },
+  {
+    "id": 31,
+    "text": "İnsanın elinden her şeyi alabilirsiniz; ancak tek bir şeyi alamazsınız: Her koşulda kendi tavrını ve duruşunu seçme özgürlüğü.",
+    "author": "Viktor E. Frankl",
+    "theme": "İrade & Anlam Arayışı",
+    "tag": "felsefe",
+    "context": "İnsanın Anlam Arayışı"
+  },
+  {
+    "id": 32,
+    "text": "Gürültü yapanlar bir şey söylemek için değil, susmaktan ve kendi içlerindeki boşlukla yüzleşmekten korktukları için konuşurlar.",
+    "author": "Dücane Cündioğlu",
+    "theme": "Gürültü Çağı Eleştirisi",
+    "tag": "felsefe",
+    "context": "Sanat ve Felsefe Notları"
+  },
+  {
+    "id": 33,
+    "text": "Güzel gören güzel düşünür. Güzel düşünen, hayatından lezzet alır. Kirli bakanın gözü her aynada çamur arar.",
+    "author": "Bediüzzaman Said Nursî",
+    "theme": "Nazar & Müspet Bakış",
+    "tag": "ihlas",
+    "context": "Mektubat (Hakikat Çekirdekleri)"
+  },
+  {
+    "id": 34,
+    "text": "Haksızlığı hak zanneden adamlara karşı hak davası iddia etmek bir haksızlıktır. Lisan-ı hal ile susmak, ahmaka en kamil cevaptır.",
+    "author": "Bediüzzaman Said Nursî",
+    "theme": "Lisan-ı Hal & Feraset",
+    "tag": "ihlas",
+    "context": "Münazarat"
+  },
+  {
+    "id": 35,
+    "text": "Kaderi tenkit eden, başını örse vurur kırar. Rahmete itiraz eden, rahmetten mahrum kalır. Olan her şeyde bir hikmet ara.",
+    "author": "Bediüzzaman Said Nursî",
+    "theme": "Teslimiyet & Sükun",
+    "tag": "ihlas",
+    "context": "Sözler (Kader Risalesi)"
+  },
+  {
+    "id": 36,
+    "text": "Söz ola kese savaşı / Söz ola kestire başı / Söz ola ağulu aşı / Yağ ile bal ede bir söz.",
+    "author": "Yunus Emre",
+    "theme": "Kelamın Hikmeti",
+    "tag": "tasavvuf",
+    "context": "Risâletü'n-Nushiyye"
+  },
+  {
+    "id": 37,
+    "text": "Susmak mananın anasıdır; söz ise onun çocuğudur. Çocuk ölse de ana diridir. Hakikati inşa edenler sessizliğin beşiğinde sallanır.",
+    "author": "Mevlânâ Celâleddîn-i Rûmî",
+    "theme": "Sükut İrfanı",
+    "tag": "tasavvuf",
+    "context": "Dîvân-ı Kebîr"
+  },
+  {
+    "id": 38,
+    "text": "Bir insan sana hakaret ettiğinde veya seni küçümsediğinde, seni incitebilen şey onun sözü değil; senin o söze verdiğin rızadır.",
+    "author": "Epiktetos",
+    "theme": "Kontrol & İhlas",
+    "tag": "stoa",
+    "context": "Düşünceler ve Sohbetler"
+  },
+  {
+    "id": 39,
+    "text": "Ahmakla münakaşaya giren her tartışmayı kaybeder; zira ahmak için sükut kadar kahredici bir ceza yoktur.",
+    "author": "İmam Şâfiî",
+    "theme": "Müsbet Suskunluk",
+    "tag": "tasavvuf",
+    "context": "Dîvânü'ş-Şâfiî"
+  },
+  {
+    "id": 40,
+    "text": "Söylesem tesiri yok, sussam gönül razı değil; lâkin sükut içinde sırr-ı hakikat gizlidir. Eserini vücuda getir, lakırdıyı tarihe bırak.",
+    "author": "Fuzûlî",
+    "theme": "Gönül & Sabır",
+    "tag": "tasavvuf",
+    "context": "Şikâyetnâme"
+  },
+  {
+    "id": 41,
+    "text": "Kendi iç huzurunu bulan insan, dünyadaki bütün fırtınaların ortasında sarsılmaz bir kale gibidir. Dalgalar kayaya çarpar, sadece köpürür ve geri döner.",
+    "author": "Marcus Aurelius",
+    "theme": "İçsel Kale",
+    "tag": "stoa",
+    "context": "Kendime Düşünceler, IV. 49"
+  },
+  {
+    "id": 42,
+    "text": "Eğer bir mum başka bir mumu yakarsa, kendi ışığından hiçbir şey kaybetmez. İyiliği ve eseri yay; hasetçilerin karanlığı sana dokunamaz.",
+    "author": "Mevlânâ Celâleddîn-i Rûmî",
+    "theme": "İhsan & Işık",
+    "tag": "tasavvuf",
+    "context": "Mesnevi, Cilt 2"
   }
 ]

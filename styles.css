@@ -1,4 +1,4 @@
-/* Derya Bulanmaz - Özel Stiller */
+/* Derya Bulanmaz - Özel Stiller & Temalar */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Scheherazade+New:wght@400;700&display=swap');
 
 :root {
@@ -14,14 +14,35 @@
   --glow-gold: rgba(226, 177, 104, 0.15);
 }
 
+/* 1. Tema Varyantları */
+body.theme-obsidian {
+  --bg-deep: #000000;
+  --bg-surface: #0a0a0a;
+  --bg-card: rgba(12, 12, 12, 0.85);
+  --accent-gold: #f59e0b;
+  --accent-teal: #0ea5e9;
+  --border-subtle: rgba(245, 158, 11, 0.25);
+  background-color: #000000 !important;
+}
+
+body.theme-parchment {
+  --bg-deep: #16110a;
+  --bg-surface: #201910;
+  --bg-card: rgba(36, 28, 18, 0.82);
+  --accent-gold: #d4a359;
+  --accent-teal: #48a9a6;
+  --border-subtle: rgba(212, 163, 89, 0.28);
+  --text-main: #f5ede0;
+  --text-muted: #b8a690;
+  background-color: #16110a !important;
+}
+
 body {
   background-color: var(--bg-deep);
   color: var(--text-main);
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  selection-background-color: #e2b168;
-  selection-color: #070d18;
 }
 
 ::selection {
@@ -48,6 +69,16 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.theme-obsidian .glass-panel {
+  background: rgba(10, 10, 10, 0.82);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+body.theme-parchment .glass-panel {
+  background: rgba(28, 22, 14, 0.82);
+  border-color: rgba(212, 163, 89, 0.15);
 }
 
 .glass-panel-gold {
@@ -81,31 +112,53 @@ body {
   pointer-events: auto;
 }
 
-/* Nefes Egzersizi Dairesi */
-@keyframes breathCycle {
+/* Nefes Egzersizi Animasyonları */
+@keyframes breath478 {
   0% {
     transform: scale(0.85);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
   }
-  38% {
-    /* 4 sn Nefes Al */
+  21% {
+    /* 4 sn Nefes Al (4 / 19 = ~21%) */
     transform: scale(1.35);
-    box-shadow: 0 0 50px rgba(226, 177, 104, 0.5);
+    box-shadow: 0 0 55px rgba(226, 177, 104, 0.55);
   }
-  67% {
-    /* 7 sn Tut */
+  58% {
+    /* 7 sn Tut (11 / 19 = ~58%) */
     transform: scale(1.35);
-    box-shadow: 0 0 45px rgba(226, 177, 104, 0.4);
+    box-shadow: 0 0 45px rgba(226, 177, 104, 0.45);
   }
   100% {
     /* 8 sn Ver */
     transform: scale(0.85);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
   }
 }
 
-.breath-animating {
-  animation: breathCycle 19s infinite ease-in-out;
+@keyframes breathBox {
+  0% { transform: scale(0.85); }
+  25% { transform: scale(1.35); }
+  50% { transform: scale(1.35); }
+  75% { transform: scale(0.85); }
+  100% { transform: scale(0.85); }
+}
+
+@keyframes breathResonance {
+  0% { transform: scale(0.85); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(0.85); }
+}
+
+.breath-478 {
+  animation: breath478 19s infinite ease-in-out;
+}
+
+.breath-box {
+  animation: breathBox 16s infinite ease-in-out;
+}
+
+.breath-resonance {
+  animation: breathResonance 10s infinite ease-in-out;
 }
 
 /* Okuma Çubuğu */
@@ -133,6 +186,48 @@ body {
   }
 }
 
+/* Ses Dalgaları Göstergesi */
+.sound-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.sound-bar {
+  width: 2.5px;
+  background-color: #e2b168;
+  border-radius: 1px;
+  animation: soundWave 1.2s infinite ease-in-out;
+}
+
+.sound-bar:nth-child(1) { animation-delay: 0.1s; height: 30%; }
+.sound-bar:nth-child(2) { animation-delay: 0.3s; height: 80%; }
+.sound-bar:nth-child(3) { animation-delay: 0.2s; height: 50%; }
+.sound-bar:nth-child(4) { animation-delay: 0.4s; height: 100%; }
+
+@keyframes soundWave {
+  0%, 100% { height: 25%; }
+  50% { height: 100%; }
+}
+
+/* Bildirim Tostu */
+#toastNotification {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#toastNotification.toast-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 20px);
+}
+
+#toastNotification.toast-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
 /* Alıntı Kartı Şıklığı */
 .quote-mark {
   font-family: 'Cinzel', serif;
@@ -150,6 +245,14 @@ body {
 
 ::-webkit-scrollbar-track {
   background: #070d18;
+}
+
+body.theme-obsidian ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+body.theme-parchment ::-webkit-scrollbar-track {
+  background: #16110a;
 }
 
 ::-webkit-scrollbar-thumb {

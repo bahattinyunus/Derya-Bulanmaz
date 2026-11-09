@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Derya Bulanmaz | Kesretin Gürültüsünden Vahdetin İnşasına</title>
-  <meta name="description" content="Gürültü çağından hakikatin sükunetine sığınak: İhlas, Müsbet Hareket ve Sarsılmaz İnşa Manifestosu ve İrfani Odak İstasyonu.">
+  <meta name="description" content="Gürültü çağından hakikatin sükunetine sığınak: İhlas, Müsbet Hareket, Müsbet Hareket Matrisi ve İrfani Odak İstasyonu.">
   <meta name="theme-color" content="#070d18">
+  <link rel="manifest" href="manifest.webmanifest">
   <meta property="og:title" content="Derya Bulanmaz | Kesretin Gürültüsünden Vahdetin İnşasına">
   <meta property="og:description" content="Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.">
   <meta property="og:image" content="assets/banner.png">
@@ -58,6 +59,12 @@
   <!-- Okuma İlerleme Çubuğu -->
   <div id="readProgressBar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-sky-400 via-gold-500 to-amber-300 z-50 w-0"></div>
 
+  <!-- Bildirim Tostu -->
+  <div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 glass-panel-gold px-5 py-2.5 rounded-full text-xs font-bold text-gold-200 shadow-2xl toast-hidden flex items-center gap-2 border border-gold-500/30">
+    <i data-lucide="sparkles" class="w-4 h-4 text-gold-400"></i>
+    <span>Derya Bulanmaz Portalı</span>
+  </div>
+
   <!-- Üst Menü / Navbar -->
   <header class="sticky top-0 z-40 glass-panel border-b border-ocean-700/50 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -70,42 +77,62 @@
       </a>
 
       <!-- Masaüstü Navigasyon -->
-      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-300">
+      <nav class="hidden md:flex items-center space-x-5 text-xs font-medium text-slate-300">
         <a href="#manifesto" class="hover:text-gold-500 transition-colors">Manifesto</a>
-        <a href="#kalkan" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="shield" class="w-3.5 h-3.5 text-sky-400"></i> Gürültü Kalkanı</a>
-        <a href="#odak" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="compass" class="w-3.5 h-3.5 text-gold-500"></i> Derya Sessizliği</a>
+        <a href="#kalkan" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="shield" class="w-3.5 h-3.5 text-sky-400"></i> Kalkan</a>
+        <a href="#matris" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="layout-grid" class="w-3.5 h-3.5 text-amber-400"></i> Vaka Matrisi</a>
+        <a href="#odak" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="compass" class="w-3.5 h-3.5 text-gold-500"></i> Odak İstasyonu</a>
         <a href="#hikmet" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="quote" class="w-3.5 h-3.5 text-sky-400"></i> Hikmet Sandığı</a>
         <a href="#gunluk" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="book-marked" class="w-3.5 h-3.5 text-gold-500"></i> Günlük</a>
         <a href="#skala" class="hover:text-gold-500 transition-colors flex items-center gap-1"><i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i> İhlas Testi</a>
       </nav>
 
-      <!-- Sağ Kontroller: Ses & Mobil Menü Butonu -->
-      <div class="flex items-center space-x-3">
-        <!-- Ambiyans Sesi Düğmesi -->
-        <button id="ambientSoundToggle" title="Okyanus & Derin Sükunet Ambiyansı" class="px-3 py-1.5 rounded-full border border-ocean-700 bg-ocean-850 hover:border-gold-500/50 text-slate-300 text-xs flex items-center space-x-2 transition-all">
-          <i data-lucide="volume-x" id="ambientSoundIcon" class="w-4 h-4 text-slate-400"></i>
-          <span id="ambientSoundText" class="hidden sm:inline">Sükunet Sesi</span>
+      <!-- Sağ Kontroller: Ses & Tema & Kısayollar -->
+      <div class="flex items-center space-x-2">
+        <!-- Ambiyans Ses Seçici & Buton -->
+        <div class="hidden sm:flex items-center bg-ocean-850 border border-ocean-700 rounded-full pl-2 pr-1 py-0.5 text-xs">
+          <select id="soundscapeSelect" class="bg-transparent text-slate-300 border-none outline-none text-[11px] pr-1 cursor-pointer">
+            <option value="ocean" class="bg-ocean-900 text-slate-200">🌊 Okyanus</option>
+            <option value="solfeggio" class="bg-ocean-900 text-slate-200">🔔 432Hz Çan</option>
+            <option value="rain" class="bg-ocean-900 text-slate-200">🌧️ Yağmur</option>
+            <option value="brown" class="bg-ocean-900 text-slate-200">🧠 Odak Gürültüsü</option>
+          </select>
+          <button id="ambientSoundToggle" title="Sesi Aç/Kapat (Kısayol: M)" class="px-2.5 py-1 rounded-full bg-ocean-800 hover:bg-gold-500/20 text-slate-300 text-xs flex items-center space-x-1.5 transition-all">
+            <i data-lucide="volume-x" id="ambientSoundIcon" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span id="ambientSoundText" class="text-[11px]">Sükunet</span>
+          </button>
+        </div>
+
+        <!-- Tema Değiştirici -->
+        <button id="themeToggleBtn" title="Temayı Değiştir (Kısayol: T)" class="p-2 rounded-lg text-slate-400 hover:text-gold-400 hover:bg-ocean-800 transition-colors">
+          <i data-lucide="palette" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Kısayollar Modal Butonu -->
+        <button id="shortcutsModalBtn" title="Klavye Kısayolları (Kısayol: ?)" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-ocean-800 transition-colors">
+          <i data-lucide="keyboard" class="w-4 h-4"></i>
         </button>
 
         <a href="https://github.com/bahattinyunus/Derya-Bulanmaz" target="_blank" rel="noopener noreferrer" title="GitHub Deposu" class="p-2 text-slate-400 hover:text-white transition-colors">
-          <i data-lucide="github" class="w-5 h-5"></i>
+          <i data-lucide="github" class="w-4 h-4"></i>
         </a>
 
         <!-- Mobil Menü Aç/Kapa Butonu -->
         <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none">
-          <i data-lucide="menu" class="w-6 h-6"></i>
+          <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
     </div>
 
     <!-- Mobil Açılır Menü -->
     <div id="mobileMenu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 glass-panel border-t border-ocean-800">
-      <a href="#manifesto" class="block px-3 py-2 rounded-md text-base hover:bg-ocean-800 text-slate-200">📜 Manifesto</a>
-      <a href="#kalkan" class="block px-3 py-2 rounded-md text-base hover:bg-ocean-800 text-slate-200">🛡️ Gürültü Kalkanı (Pusula)</a>
-      <a href="#odak" class="block px-3 py-2 rounded-md text-base hover:bg-ocean-800 text-slate-200">⏳ Derya Sessizliği (Odak)</a>
-      <a href="#hikmet" class="block px-3 py-2 rounded-md text-base hover:bg-ocean-800 text-slate-200">💎 Hikmet Sandığı & Kartlar</a>
-      <a href="#gunluk" class="block px-3 py-2 rounded-md text-base hover:bg-ocean-800 text-slate-200">📓 Müsbet Eser Günlüğü</a>
-      <a href="#skala" class="block px-3 py-2 rounded-md text-base hover:bg-ocean-800 text-slate-200">🧭 İhlas & Sarsılmazlık Testi</a>
+      <a href="#manifesto" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">📜 Manifesto</a>
+      <a href="#kalkan" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">🛡️ Gürültü Kalkanı</a>
+      <a href="#matris" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">🏛️ Müsbet Vaka Matrisi</a>
+      <a href="#odak" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">⏳ Derya Odak İstasyonu</a>
+      <a href="#hikmet" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">💎 Hikmet Sandığı</a>
+      <a href="#gunluk" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">📓 Müsbet Eser Günlüğü</a>
+      <a href="#skala" class="block px-3 py-2 rounded-md text-sm hover:bg-ocean-800 text-slate-200">🧭 İhlas & Sarsılmazlık Testi</a>
     </div>
   </header>
 
@@ -115,7 +142,7 @@
   <section class="relative min-h-[92vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
     <canvas id="oceanCanvas"></canvas>
 
-    <div class="relative z-10 max-w-4xl mx-auto text-center py-16">
+    <div class="relative z-10 max-w-4xl mx-auto text-center py-12">
       <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-gold-500/30 bg-ocean-950/80 backdrop-blur-sm mb-6 animate-pulse">
         <span class="w-2 h-2 rounded-full bg-gold-400"></span>
         <span class="text-xs uppercase tracking-widest text-gold-300 font-medium">Kesretin Gürültüsünden Vahdetin İnşasına</span>
@@ -134,32 +161,49 @@
         <span class="block text-xs uppercase tracking-widest text-gold-400 mt-3 font-semibold">— Risale-i Nur Külliyatı</span>
       </div>
 
-      <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+      <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed mb-8">
         Toplumlar çürürken sağır edici bir gürültü çıkarır; hakikat ise inşa edilirken daima sessizdir. Kalabalıkların kaosu, ancak hakikate adanmış bir zihnin sarsılmazlığında kendi hiçliğiyle yüzleşir.
       </p>
 
       <!-- İnteraktif "Çamur At / Deryayı Sına" Deneyi -->
-      <div class="glass-panel max-w-lg mx-auto p-4 rounded-xl border border-sky-900/50 mb-8">
-        <label for="mudInput" class="block text-xs font-semibold uppercase tracking-wider text-sky-300 mb-2">
-          🌊 Derya Etkileşimi: Dışarıdan gelen lafı, çamuru veya gürültüyü fırlat
-        </label>
-        <div class="flex gap-2">
-          <input type="text" id="mudInput" placeholder="Örn: Haset, dedikodu, alay, linç..." class="w-full bg-ocean-950 border border-ocean-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-gold-500">
+      <div class="glass-panel max-w-xl mx-auto p-5 rounded-2xl border border-sky-900/50 mb-8 shadow-2xl">
+        <div class="flex items-center justify-between mb-2">
+          <label for="mudInput" class="block text-xs font-semibold uppercase tracking-wider text-sky-300">
+            🌊 Derya Etkileşimi: Gürültüyü fırlat ve eriyişini izle
+          </label>
+          <span class="text-[11px] text-gold-400/90 font-mono">
+            <span id="mudAbsorbedCount">0</span> soğuruldu
+          </span>
+        </div>
+        
+        <div class="flex gap-2 mb-3">
+          <input type="text" id="mudInput" placeholder="Örn: Haset, linç, dedikodu, alay..." class="w-full bg-ocean-950 border border-ocean-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-gold-500">
           <button id="throwMudBtn" class="bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-ocean-950 font-bold px-4 py-2 rounded-lg text-sm transition-all whitespace-nowrap shadow-lg">
             Çamur At
           </button>
         </div>
-        <p id="mudFeedback" class="text-xs text-slate-400 mt-2 italic transition-all opacity-0 h-4"></p>
+
+        <!-- Hızlı Çamur Hapları (Presets) -->
+        <div class="flex flex-wrap gap-1.5 justify-center pt-1">
+          <button class="mud-preset-pill px-2.5 py-1 rounded-full text-[11px] bg-ocean-800/80 hover:bg-gold-500/20 hover:text-gold-300 text-slate-400 border border-ocean-700 transition-colors" data-text="Sosyal Medya Linci">💥 Linç</button>
+          <button class="mud-preset-pill px-2.5 py-1 rounded-full text-[11px] bg-ocean-800/80 hover:bg-gold-500/20 hover:text-gold-300 text-slate-400 border border-ocean-700 transition-colors" data-text="Haksız İftira">🗣️ İftira</button>
+          <button class="mud-preset-pill px-2.5 py-1 rounded-full text-[11px] bg-ocean-800/80 hover:bg-gold-500/20 hover:text-gold-300 text-slate-400 border border-ocean-700 transition-colors" data-text="Yengeç Hasedi">🦀 Haset</button>
+          <button class="mud-preset-pill px-2.5 py-1 rounded-full text-[11px] bg-ocean-800/80 hover:bg-gold-500/20 hover:text-gold-300 text-slate-400 border border-ocean-700 transition-colors" data-text="Emek Gaspı">✂️ Emek Gaspı</button>
+          <button class="mud-preset-pill px-2.5 py-1 rounded-full text-[11px] bg-ocean-800/80 hover:bg-gold-500/20 hover:text-gold-300 text-slate-400 border border-ocean-700 transition-colors" data-text="Tembellerin Alayı">🎭 Alay</button>
+          <button class="mud-preset-pill px-2.5 py-1 rounded-full text-[11px] bg-ocean-800/80 hover:bg-gold-500/20 hover:text-gold-300 text-slate-400 border border-ocean-700 transition-colors" data-text="Vefasızlık">💔 Vefasızlık</button>
+        </div>
+
+        <p id="mudFeedback" class="text-xs text-slate-300 mt-2.5 italic transition-all opacity-0 h-4"></p>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="#manifesto" class="px-6 py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-ocean-950 font-bold text-sm transition-all shadow-lg shadow-gold-500/20 flex items-center gap-2">
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="#manifesto" class="px-5 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-ocean-950 font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-gold-500/20 flex items-center gap-1.5">
           <i data-lucide="book-open" class="w-4 h-4"></i> Manifestoyu Oku
         </a>
-        <a href="#kalkan" class="px-6 py-3 rounded-xl glass-panel hover:bg-ocean-800 text-white font-medium text-sm border border-slate-700 transition-all flex items-center gap-2">
-          <i data-lucide="shield" class="w-4 h-4 text-sky-400"></i> Gürültü Kalkanı
+        <a href="#matris" class="px-5 py-2.5 rounded-xl glass-panel hover:bg-ocean-800 text-white font-medium text-xs uppercase tracking-wider border border-slate-700 transition-all flex items-center gap-1.5">
+          <i data-lucide="layout-grid" class="w-4 h-4 text-amber-400"></i> Vaka Matrisi
         </a>
-        <a href="#odak" class="px-6 py-3 rounded-xl glass-panel hover:bg-ocean-800 text-white font-medium text-sm border border-slate-700 transition-all flex items-center gap-2">
+        <a href="#odak" class="px-5 py-2.5 rounded-xl glass-panel hover:bg-ocean-800 text-white font-medium text-xs uppercase tracking-wider border border-slate-700 transition-all flex items-center gap-1.5">
           <i data-lucide="sparkles" class="w-4 h-4 text-gold-400"></i> Odak İstasyonu
         </a>
       </div>
@@ -178,64 +222,57 @@
     
     <!-- Okuma Kontrol Paneli -->
     <div class="glass-panel p-4 rounded-2xl mb-12 flex flex-wrap items-center justify-between gap-4 border border-ocean-700/60">
-      <div class="flex items-center space-x-2 text-xs text-slate-400">
-        <i data-lucide="clock" class="w-4 h-4 text-gold-500"></i>
-        <span>Tahmini Okuma: <strong>6 dakika</strong></span>
+      <div class="flex items-center space-x-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Tipografi:</span>
+        <button id="fontToggleSerif" class="px-3 py-1 rounded-lg text-xs font-serif bg-ocean-800 text-gold-400 border border-ocean-700">Serif</button>
+        <button id="fontToggleSans" class="px-3 py-1 rounded-lg text-xs font-sans hover:bg-ocean-800 text-slate-300 border border-ocean-700">Sans</button>
       </div>
 
-      <div class="flex items-center space-x-3 text-xs">
-        <span class="text-slate-400">Yazı Tipi:</span>
-        <button id="fontToggleSerif" class="px-2.5 py-1 rounded border border-gold-500/40 bg-gold-500/10 text-gold-300 font-serif">Serif</button>
-        <button id="fontToggleSans" class="px-2.5 py-1 rounded border border-ocean-700 hover:border-slate-500 text-slate-300 font-sans">Sans</button>
-        
-        <span class="text-slate-400 ml-2">Boyut:</span>
-        <button id="fontSizeDec" class="px-2 py-1 rounded bg-ocean-800 text-slate-200 hover:bg-ocean-700">A-</button>
-        <button id="fontSizeInc" class="px-2 py-1 rounded bg-ocean-800 text-slate-200 hover:bg-ocean-700">A+</button>
+      <div class="flex items-center space-x-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Punto:</span>
+        <button id="fontSizeDec" class="w-8 h-8 rounded-lg bg-ocean-850 hover:bg-ocean-800 border border-ocean-700 text-xs font-bold text-slate-200">A-</button>
+        <button id="fontSizeInc" class="w-8 h-8 rounded-lg bg-ocean-850 hover:bg-ocean-800 border border-ocean-700 text-xs font-bold text-slate-200">A+</button>
       </div>
 
-      <button id="readAloudBtn" class="px-3 py-1.5 rounded-lg bg-sky-950/80 border border-sky-700/50 text-sky-300 hover:bg-sky-900 text-xs flex items-center gap-1.5 transition-colors">
-        <i data-lucide="headphones" class="w-3.5 h-3.5"></i>
-        <span id="readAloudText">Sesli Dinle</span>
-      </button>
+      <div>
+        <button id="readAloudBtn" class="px-3 py-1.5 rounded-lg border border-ocean-700 bg-ocean-850 hover:border-gold-500/50 text-slate-300 text-xs flex items-center space-x-1.5 transition-all">
+          <i data-lucide="volume-2" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span id="readAloudText">Sesli Dinle</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Manifesto Başlığı -->
+    <!-- Başlık ve Giriş -->
     <div class="text-center mb-16">
-      <span class="text-xs uppercase tracking-widest text-gold-400 font-semibold">Felsefi & İrfani Manifesto</span>
-      <h2 class="font-cinzel text-3xl sm:text-5xl font-bold mt-2 mb-4 text-white">DERYA BULANMAZ</h2>
-      <p class="font-serif-reading text-xl text-sky-200 italic max-w-2xl mx-auto">
-        "Kesretin Gürültüsünden Vahdetin İnşasına"
+      <span class="text-xs font-bold uppercase tracking-widest text-gold-400">Felsefi ve İrfani Risale</span>
+      <h2 class="font-cinzel text-3xl sm:text-5xl font-extrabold text-white mt-2 mb-4">
+        Kesretin Gürültüsünden Vahdetin İnşasına
+      </h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mb-6"></div>
+      <p class="font-serif-reading text-lg sm:text-xl text-slate-300 italic max-w-2xl mx-auto">
+        "Toplumlar çürürken sağır edici bir gürültü çıkarır; hakikat ise inşa edilirken daima sessizdir."
       </p>
-      <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-6"></div>
     </div>
 
-    <!-- Manifesto İçeriği (Okuma Alanı) -->
-    <article id="manifestoContent" class="space-y-16 font-serif-reading text-slate-200 text-lg leading-relaxed">
+    <!-- Manifesto Gövdesi -->
+    <article id="manifestoContent" class="font-serif-reading text-lg text-slate-200 leading-relaxed space-y-12">
       
       <!-- 1. BÖLÜM -->
       <section class="manifesto-chapter">
         <div class="flex items-center gap-3 mb-4">
           <span class="font-cinzel text-2xl font-black text-gold-500/60">01</span>
-          <h3 class="font-cinzel text-2xl font-bold text-white">Evrensel Kriz: Gürültü Çağı ve Anlamın Yitirilişi</h3>
+          <h3 class="font-cinzel text-2xl font-bold text-white">Giriş: Gürültü Çağı ve Kaybolan Anlam</h3>
         </div>
         <p class="mb-4">
-          Modern çağ, insanın dış dünyayı (âfâk) fethederken kendi iç dünyasında (enfüs) devasa bir yenilgiye uğradığı bir dönemdir. İnsanlar, kendi içlerinde uğruna yaşayacakları, yorulacakları ve üretecekleri bir "anlam" bulamadıkları için, var olduklarını hissedebilmek adına dışarıda sürekli bir gürültü, bir yıkım ve bir alay mekanizması üretmek zorunda kalmışlardır.
+          İnsanlık tarihinin en gürültülü, en dağınık ve en reaktif çağını yaşıyoruz. İnsanlar artık bir şeyi inşa etmek için değil; bir şeyleri yıkmak, alaya almak, eleştirmek ve başkalarının hayatları üzerinden kendi varlıklarını ispatlamak için konuşuyorlar.
         </p>
-        <p class="mb-6">
-          Bir toplumda veya toplulukta "gaye-i hayal" (yüce bir ideal) kaybolduğunda, o topluluk birbiriyle dayanışan bir yapı olmaktan çıkar; herkesin birbirini aşağı çekerek hayatta kalmaya çalıştığı, üretene ve ışıldayana düşman olan bir zindana dönüşür.
+        <p class="mb-4">
+          Bir gayesi, bir derdi, hakikate adanmış bir davası olmayan kitleler; içlerindeki o derin, dayanılmaz varoluşsal boşluğu bastırabilmek için sürekli dışarıya saldırırlar. Kendi bahçesinde tek bir tohum ekmeyenler, başkalarının açan güllerine çamur fırlatmayı tek meşgale haline getirirler.
         </p>
-
-        <!-- Alıntılar -->
-        <div class="grid sm:grid-cols-2 gap-4 my-6">
-          <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-gold-500">
-            <p class="italic text-sm text-slate-300">"İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır. Başkalarına saldıranlar, aslında kendi zindanlarının parmaklıklarını dövenlerdir."</p>
-            <cite class="block text-xs uppercase tracking-wider text-gold-400 mt-2 font-sans font-semibold">— Carl Gustav Jung</cite>
-          </blockquote>
-          <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-sky-400">
-            <p class="italic text-sm text-slate-300">"Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır."</p>
-            <cite class="block text-xs uppercase tracking-wider text-sky-400 mt-2 font-sans font-semibold">— Arthur Schopenhauer</cite>
-          </blockquote>
-        </div>
+        <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-gold-500 my-6">
+          <p class="italic text-base text-gold-200">"İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır. Başkalarına saldıranlar, aslında kendi zindanlarının parmaklıklarını dövenlerdir."</p>
+          <cite class="block text-xs uppercase tracking-wider text-slate-400 mt-2 font-sans font-semibold">— Carl Gustav Jung</cite>
+        </blockquote>
       </section>
 
       <!-- 2. BÖLÜM -->
@@ -244,53 +281,21 @@
           <span class="font-cinzel text-2xl font-black text-gold-500/60">02</span>
           <h3 class="font-cinzel text-2xl font-bold text-white">Çürüyen Kalabalığın Anatomisi: Neden Saldırırlar?</h3>
         </div>
-        <p class="mb-6">
-          Kalabalıkların, ideallerine tutkuyla bağlı olan ve sessizce üreten bir bireye saldırmasının temelinde kötülükten ziyade derin bir ıstırap, yetersizlik ve çaresizlik yatar. Bu saldırganlık, şu ağır manevi hastalıkların dışa vurumudur:
+        <p class="mb-4">
+          Üreten, odaklanan, sessizce eserini vücuda getiren bir insan; kalabalıklar için tahammül edilemez bir tehdittir. Çünkü çalışan her insan, yan gelip yatanların yüzüne tutulmuş acımasız bir aynadır. O ayna, tembele tembelliğini, gayesize gayesizliğini, korkağa korkaklığını hatırlatır.
         </p>
-
-        <div class="space-y-6">
-          <!-- A -->
-          <div class="p-5 rounded-xl glass-panel border border-ocean-700/80">
-            <h4 class="font-cinzel text-lg font-bold text-gold-300 mb-2">A. Gaye-i Hayal Eksikliği ve İçsel Hiçlik</h4>
-            <p class="text-base text-slate-300 mb-3">
-              Kendi hayatında ter dökeceği, fedakarlık yapacağı hiçbir ideali olmayan bir insan, korkunç bir iç boşluk yaşar. Büyük bir adanmışlıkla çalışan birini görmek, bu eylemsiz insanlara kendi "hiçliklerini" hatırlatan acımasız bir aynadır. O aynada kendi tembelliklerini gördükleri an, içlerindeki vicdan azabını susturmak için o aynayı kırmak, değersizleştirmek isterler.
+        <div class="space-y-4 my-6">
+          <div class="glass-panel p-4 rounded-xl border-l-2 border-sky-400">
+            <h4 class="font-bold text-white text-base mb-1 font-sans">A. Göstermelik Gamsızlık (Sinik Maske)</h4>
+            <p class="text-sm text-slate-300">
+              Modern insan "hiçbir şeyi umursamıyormuş", "her şeyle dalga geçiyormuş" gibi görünür. Oysa bu alaycılık, içteki derin çaresizliğin zırhıdır. Üreten insan bu sahte zırhı parçalar.
             </p>
-            <blockquote class="text-xs italic text-slate-400 font-sans border-l-2 border-gold-500 pl-3">
-              "Büyük beyinler fikirleri tartışır, orta beyinler olayları tartışır, küçük beyinler insanları tartışır." — Eleanor Roosevelt
-            </blockquote>
           </div>
-
-          <!-- B -->
-          <div class="p-5 rounded-xl glass-panel border border-ocean-700/80">
-            <h4 class="font-cinzel text-lg font-bold text-gold-300 mb-2">B. Göstermelik Gamsızlık (Sinik Maske)</h4>
-            <p class="text-base text-slate-300 mb-3">
-              Günümüz kültüründe "çabalamak, bir işe tutkuyla sarılmak ve ciddiye almak" zayıflık olarak yaftalanmıştır. Kalabalıklar, başarısız olma korkusunu "Zaten umursamıyorum ki" maskesi arkasına saklar. Üreten bireyin sahici coşkusu ve adanmışlığı, bu sahte maskeyi yırtıp atar. Kalabalık, kendi maskesi düştüğü için öfkelenir ve tutkuyu ucuzlatmak için alaycı sıfatlara sığınır.
+          <div class="glass-panel p-4 rounded-xl border-l-2 border-amber-400">
+            <h4 class="font-bold text-white text-base mb-1 font-sans">B. Sürü Psikolojisi ve Dijital Çeteleşme</h4>
+            <p class="text-sm text-slate-300">
+              Tek başınayken hiçbir ağırlığı olmayan fertler, kitle haline geldiklerinde kendilerinde sahte bir güç vehmederler. Kitle içinde sorumluluk dağılır; linç kültürü ve dedikodu bir afyona dönüşür.
             </p>
-            <blockquote class="text-xs italic text-slate-400 font-sans border-l-2 border-gold-500 pl-3">
-              "Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar." — Jean-Jacques Rousseau
-            </blockquote>
-          </div>
-
-          <!-- C -->
-          <div class="p-5 rounded-xl glass-panel border border-ocean-700/80">
-            <h4 class="font-cinzel text-lg font-bold text-gold-300 mb-2">C. Sürü Psikolojisi (Dijital Çeteleşme)</h4>
-            <p class="text-base text-slate-300 mb-3">
-              Birey olarak tek başlarına kaldıklarında son derece korkak ve eylemsiz olan bu insanlar, bir "linç güruhuna" karıştıklarında aniden vahşileşirler. Kalabalığın içinde sorumluluk dağılır. Başkasına attıkları her çamur, onlara geçici bir "aidiyet" ve sahte bir "güç" hissi verir.
-            </p>
-            <blockquote class="text-xs italic text-slate-400 font-sans border-l-2 border-gold-500 pl-3">
-              "Kitle asla en iyi üyelerinin seviyesine çıkamaz; o her zaman en alt seviyedekilerin hizasına inerek dengelenir." — Friedrich Nietzsche
-            </blockquote>
-          </div>
-
-          <!-- D -->
-          <div class="p-5 rounded-xl glass-panel border border-ocean-700/80">
-            <h4 class="font-cinzel text-lg font-bold text-gold-300 mb-2">D. Yengeç Sepeti Hasedi</h4>
-            <p class="text-base text-slate-300 mb-3">
-              Üreten ve dikey bir sıçrama yapan birey, sürünün "Biz yapamıyorsak kimse yapmamalı" şeklindeki karanlık sözleşmesini bozar. Sürü, o dikey sıçramayı anlamlandırmak yerine, o kişiyi paçasından çekip kendi vasat, karanlık ve sıradan yatay düzlemine indirmeye çalışır.
-            </p>
-            <blockquote class="text-xs italic text-slate-400 font-sans border-l-2 border-gold-500 pl-3">
-              "Senin dünyaya bakan penceren kirli ise, benim açan çiçeklerim sana çamur görünür." — Mevlânâ Celâleddîn-i Rûmî
-            </blockquote>
           </div>
         </div>
       </section>
@@ -299,34 +304,18 @@
       <section class="manifesto-chapter">
         <div class="flex items-center gap-3 mb-4">
           <span class="font-cinzel text-2xl font-black text-gold-500/60">03</span>
-          <h3 class="font-cinzel text-2xl font-bold text-white">Zırh ve Korunma: İhlas Sırrı ile Hürriyet</h3>
+          <h3 class="font-cinzel text-2xl font-bold text-white">Zırh ve Korunma: İhlas Sırrı</h3>
         </div>
         <p class="mb-4">
-          Bir insanın, kalabalıkların saldırılarına, alaylarına veya övgülerine karşı en büyük zafiyeti <strong>"onaylanma ihtiyacıdır"</strong>. Eğer bir kişi dışarıdan takdir beklerse, dışarıdan gelecek tahkire (aşağılanmaya) de açık hale gelir.
+          Kalabalıkların attığı çamurdan korunmanın tek bir yolu vardır: <b>İhlas</b>. İhlas; yaptığın işi insanların övgüsü, alkışı veya beğenisi için değil, sırf hakikatin hatırı için yapmaktır.
         </p>
-        <p class="mb-6">
-          Bunun yegane ilacı <strong>İhlas</strong>'tır. İhlas, bir işi sadece ve sadece Hakikat için yapmaktır. Bir insan ihlas sırrına erdiğinde, insanların onu alkışlamasıyla yuhalaması kalbinde eşitlenir. Dış dünyanın yargıları kapıda kalır, içeri giremez. O, artık insanların kulu değil, sadece inandığı hakikatin hizmetkârıdır.
+        <p class="mb-4">
+          Eğer bir insan, eserini başkalarının alkışı için yapıyorsa; onların bir tek yergisiyle yerle bir olur. Fakat niyetini sadece hakikate ve mutlak rızaya bağlamışsa, bütün dünya karşısına geçse ona tek bir çizik bile atamaz.
         </p>
-
-        <div class="space-y-4 my-6">
-          <blockquote class="p-4 rounded-xl glass-panel-gold">
-            <p class="italic text-base text-gold-100">
-              "Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok. Eğer O kabul etse, bütün halk reddetse tesiri yok."
-            </p>
-            <cite class="block text-xs uppercase tracking-wider text-gold-400 mt-2 font-sans font-semibold">— Bediüzzaman Said Nursî</cite>
-          </blockquote>
-
-          <div class="grid sm:grid-cols-2 gap-4">
-            <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-amber-400">
-              <p class="italic text-sm text-slate-300">"İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır."</p>
-              <cite class="block text-xs uppercase tracking-wider text-amber-400 mt-2 font-sans font-semibold">— İbn Ataullah el-İskenderî</cite>
-            </blockquote>
-            <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-sky-400">
-              <p class="italic text-sm text-slate-300">"Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar."</p>
-              <cite class="block text-xs uppercase tracking-wider text-sky-400 mt-2 font-sans font-semibold">— Lao Tzu</cite>
-            </blockquote>
-          </div>
-        </div>
+        <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-sky-400 my-6">
+          <p class="italic text-base text-sky-200">"Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok. Eğer O kabul etse, bütün halk reddetse tesiri yok."</p>
+          <cite class="block text-xs uppercase tracking-wider text-slate-400 mt-2 font-sans font-semibold">— Bediüzzaman Said Nursî (İhlas Risalesi)</cite>
+        </blockquote>
       </section>
 
       <!-- 4. BÖLÜM -->
@@ -336,17 +325,15 @@
           <h3 class="font-cinzel text-2xl font-bold text-white">İnşa ve Kurtuluş Reçetesi: Müsbet Hareket</h3>
         </div>
         <p class="mb-6">
-          Üreten bir şahsiyet, ehl-i gafletin (karanlık kalabalığın) saldırısına maruz kaldığında kavgaya, tartışmaya veya kendini kanıtlama telaşına düşmez. O, <strong>Müsbet Hareket (yapıcı eylem)</strong> ilkesiyle hareket eder.
+          Gürültüyle savaşmanın yolu daha çok bağırmak değildir. Yangına benzin dökülmez. Hakiki fatih, kavga etmeyen; eserini inşa edendir.
         </p>
-
-        <!-- 3 Aşama -->
-        <div class="relative border-l-2 border-gold-500/30 pl-6 ml-3 space-y-8 my-8">
-          
+        
+        <div class="relative pl-6 border-l-2 border-ocean-700 space-y-8 my-8">
           <div class="relative">
             <span class="absolute -left-[33px] top-0 w-6 h-6 rounded-full bg-ocean-950 border-2 border-gold-500 flex items-center justify-center text-xs font-bold text-gold-400">1</span>
             <h4 class="font-cinzel text-lg font-bold text-white mb-2">1. Aşama: Lisan-ı Hal ile Susmak</h4>
             <p class="text-base text-slate-300 mb-2">
-              Gürültücülerin tek gıdası, kavgadır. Sana atılan çamura cevap vermek, kendi ellerini de çamura bulamaktır. Üreten kişi, söylenen hiçbir alaya veya hakarete sözlü cevap vermez. Ağırbaşlı bir sessizliğe bürünür.
+              Sana atılan her iftiraya, her alaya cevap yetiştirmeye kalkarsan; onların seviyesine inersin. Bir divane deryaya çamur attığında, derya onun peşinden koşmaz; kendi enginliğinde o çamuru eritir.
             </p>
             <div class="flex flex-wrap gap-2 text-xs italic text-slate-400">
               <span class="bg-ocean-800 px-2 py-1 rounded">"Bir divane çamur atsa, derya bulanmaz." — Risale-i Nur</span>
@@ -358,7 +345,7 @@
             <span class="absolute -left-[33px] top-0 w-6 h-6 rounded-full bg-ocean-950 border-2 border-gold-500 flex items-center justify-center text-xs font-bold text-gold-400">2</span>
             <h4 class="font-cinzel text-lg font-bold text-white mb-2">2. Aşama: Gafletin Kendi İçine Çöküşü</h4>
             <p class="text-base text-slate-300 mb-2">
-              Saldırganlar, attıkları taşların dağı sarsmadığını gördüklerinde büyük bir şok yaşarlar. Karşılarında sarsılmaz bir irade gördüklerinde, o güne kadar bastırdıkları devasa anlamsızlık ve hiçlik duygusu kendi üzerlerine çöker. Hedefini bulamayan kin, sahibini zehirlemeye başlar.
+              Saldırganlar, attıkları taşların dağı sarsmadığını gördüklerinde büyük bir şok yaşarlar. Karşılarında sarsılmaz bir irade gördüklerinde, o güne kadar bastırdıkları devasa anlamsızlık ve hiçlik duygusu kendi üzerlerine çöker.
             </p>
             <span class="inline-block text-xs italic text-slate-400 bg-ocean-800 px-2 py-1 rounded">"Karanlığa sövmektense, bir mum yak." — Konfüçyüs</span>
           </div>
@@ -367,11 +354,11 @@
             <span class="absolute -left-[33px] top-0 w-6 h-6 rounded-full bg-ocean-950 border-2 border-gold-500 flex items-center justify-center text-xs font-bold text-gold-400">3</span>
             <h4 class="font-cinzel text-lg font-bold text-white mb-2">3. Aşama: Eserin İnşası ve Arının Bal İçinde İnlemesi</h4>
             <p class="text-base text-slate-300 mb-2">
-              Dışarıdaki kaos kendi kendini tüketirken, üreten kişi kendi ilmini, kendi sanatını, kendi projesini sessizce inşa etmeye devam eder. Gösteriş, etiketler ve savunmalar geride kalmıştır; geriye sadece üretilen "Eser" kalmıştır. Üreten kişi, yaptığı işin içinde erir, kaybolur.
+              Dışarıdaki kaos kendi kendini tüketirken, üreten kişi kendi ilmini, kendi sanatını, kendi projesini sessizce inşa etmeye devam eder. Gösteriş ve etiketler geride kalmıştır; geriye sadece üretilen "Eser" kalmıştır.
             </p>
             <div class="flex flex-wrap gap-2 text-xs italic text-slate-400">
               <span class="bg-ocean-800 px-2 py-1 rounded">"Arı inler bal içinde..." — Anadolu İrfanı</span>
-              <span class="bg-ocean-800 px-2 py-1 rounded">"Dervişlik dedikleri hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil." — Yunus Emre</span>
+              <span class="bg-ocean-800 px-2 py-1 rounded">"Dervişlik hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil." — Yunus Emre</span>
             </div>
           </div>
         </div>
@@ -386,9 +373,6 @@
         <p class="mb-4">
           Bu sürecin en üst noktası, sana saldıranlara öfke duymayı bırakıp, onların içine düştüğü o manevi bataklığa merhamet etmektir. Onlar, kendi elleriyle inşa ettikleri amaçsızlık zindanının parmaklıklarını döven mahkumlardır.
         </p>
-        <p class="mb-6">
-          En büyük intikam veya en büyük cevap; onların seviyesine inmek değil, onların hayal bile edemeyeceği ufuklarda eserler bırakıp kendi yoluna yürümektir.
-        </p>
         <blockquote class="p-4 rounded-xl glass-panel border-l-4 border-emerald-400">
           <p class="italic text-base text-emerald-100">"Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir."</p>
           <cite class="block text-xs uppercase tracking-wider text-emerald-400 mt-2 font-sans font-semibold">— Marcus Aurelius</cite>
@@ -401,9 +385,6 @@
         <h3 class="font-cinzel text-2xl font-bold text-white mb-4">Son Söz</h3>
         <p class="mb-4">
           Toplumsal çürüme ve haset her çağda olmuştur, kıyamete kadar da olacaktır. Ancak hakikat, bağırarak veya kavgayla değil; eylemlerin o sessiz, ağır ve sarsılmaz ağırlığıyla ispatlanır.
-        </p>
-        <p class="mb-4">
-          Bu manifesto; başkalarının karanlığına sövmektense kendi aydınlığını inşa etmeyi seçen, dışarıdaki milyonlarca "Kesret" gürültüsüne kulağını tıkayıp kendi içindeki "Vahdet"i arayan tüm çilekeş mimarlara adanmıştır.
         </p>
         <p class="font-bold text-gold-300 text-lg leading-relaxed mt-6">
           "Bırakın onlar gürültü yapsınlar. Siz kendi hakikatinizi sessizlikte inşa etmeye, inandığınız yolda yürümeye devam edin. Eser tamamlandığında, onların çıkardığı tek ses, sizin sükunetinizde yankılanan kendi hiçlikleri olacaktır."
@@ -459,44 +440,49 @@
 
       <!-- Çözüm & Zırh Sağ Kart -->
       <div id="compassCard" class="md:col-span-2 glass-panel-gold p-6 rounded-2xl flex flex-col justify-between">
-        <!-- Dinamik İçerik (app.js üzerinden doldurulur) -->
-        <div id="compassOutput">
-          <!-- Örnek başlangıç içeriği -->
-          <div class="flex items-center gap-2 mb-4">
-            <span class="px-2.5 py-1 rounded bg-sky-950 text-sky-400 text-xs font-semibold uppercase">Teşhis</span>
-            <h3 class="font-cinzel text-xl font-bold text-white">Sürü Psikolojisi ve Dijital Çeteleşme</h3>
-          </div>
-          <p class="text-slate-300 text-sm leading-relaxed mb-6">
-            Birey olarak tek başlarına kaldıklarında eylemsiz olanlar, kitle içinde sorumluluğun dağılmasına sığınır. Sana attıkları her çamur, onlara geçici bir aidiyet hissi verir. Bu bir şahsi mesele değil, onların kendi hiçliklerini bastırma çabasıdır.
-          </p>
-
-          <div class="space-y-4 border-t border-ocean-800 pt-4">
-            <div class="flex items-start gap-3">
-              <i data-lucide="shield-check" class="w-5 h-5 text-gold-400 shrink-0 mt-0.5"></i>
-              <div>
-                <h4 class="text-sm font-bold text-gold-300">Manevi Zırh (İhlas Kalkanı)</h4>
-                <p class="text-xs text-slate-300 leading-normal">
-                  "Bir divane çamur atsa, derya bulanmaz." Attıkları çamur ancak senin elinle ona dokunursan eline bulaşır. Suskunluk bir yenilgi değil; deryanın büyüklüğüdür.
-                </p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3">
-              <i data-lucide="hammer" class="w-5 h-5 text-sky-400 shrink-0 mt-0.5"></i>
-              <div>
-                <h4 class="text-sm font-bold text-sky-300">Somut Müsbet Eylem</h4>
-                <p class="text-xs text-slate-300 leading-normal">
-                  Cevap verme, açıklama yapma. Ekranı kapat. Sıradaki projenin koduna/yazısına 30 dakika kesintisiz gömül. Onların tek gıdası kavgadır; cevap vermezsen kendi zehirlerinde boğulurlar.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <div id="compassOutput"></div>
         <div class="mt-6 pt-4 border-t border-ocean-800/80 flex items-center justify-between text-xs text-slate-400">
           <span class="italic font-serif-reading text-gold-300/80">"Kötülüğe verilecek en iyi cevap, onlara benzememektir." — Marcus Aurelius</span>
           <button id="copyCompassAdvice" class="hover:text-gold-400 flex items-center gap-1 transition-colors">
             <i data-lucide="copy" class="w-3.5 h-3.5"></i> Kopyala
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- YENİ BÖLÜM 2.5: MÜSBET HAREKET MATRİSİ & VAKA ÇÖZÜCÜ -->
+  <!-- ========================================== -->
+  <section id="matris" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-ocean-800">
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/80 border border-amber-600/50 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> 4 Kademeli Kriz Çözücü
+      </div>
+      <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Müsbet Hareket Matrisi & Vaka Rehberi</h2>
+      <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mt-2">
+        Hayatın içinde karşılaştığınız derin krizleri ve haksızlıkları Enfüs, Lisan-ı Hal, Eser ve Merhamet süzgecinden geçirerek somut aksiyona dönüştürün.
+      </p>
+    </div>
+
+    <div id="matrixContainer" class="grid lg:grid-cols-12 gap-6 items-start">
+      <!-- Vaka Listesi (Sol Sütun) -->
+      <div class="lg:col-span-4 space-y-2" id="matrixTabs">
+        <!-- JS ile doldurulacak -->
+      </div>
+
+      <!-- Çözüm & Protokol Paneli (Sağ Sütun) -->
+      <div class="lg:col-span-8 glass-panel-gold p-6 sm:p-8 rounded-3xl border border-gold-500/30 shadow-2xl flex flex-col justify-between">
+        <div id="matrixContentArea">
+          <!-- JS ile doldurulacak -->
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-ocean-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <button id="matrixToJournalBtn" class="px-4 py-2 rounded-xl bg-gold-500 hover:bg-gold-400 text-ocean-950 font-bold transition-all flex items-center gap-2">
+            <i data-lucide="book-marked" class="w-4 h-4"></i> Bu Reçeteyi Günlüğüme Aktar
+          </button>
+          <button id="matrixCopyBtn" class="px-4 py-2 rounded-xl bg-ocean-850 hover:bg-ocean-800 text-slate-300 border border-ocean-700 transition-colors flex items-center gap-2">
+            <i data-lucide="copy" class="w-4 h-4 text-sky-400"></i> Protokolü Kopyala
           </button>
         </div>
       </div>
@@ -526,7 +512,7 @@
           ⏳ Eser İnşa Sayacı
         </button>
         <button id="tabBreath" class="px-5 py-2 rounded-xl bg-ocean-800 text-slate-300 font-bold text-xs uppercase tracking-wider hover:bg-ocean-700">
-          🌬️ Nefes-i Sükun (4-7-8)
+          🌬️ Nefes-i Sükun
         </button>
       </div>
 
@@ -534,7 +520,7 @@
       <div id="focusPanel" class="text-center">
         <!-- Odaklanılan Eser Adı -->
         <div class="max-w-md mx-auto mb-6">
-          <input type="text" id="focusGoalInput" placeholder="Bugün hangi eseri inşa ediyorsun? (Örn: Kod, Makale, Tasarım...)" class="w-full bg-ocean-950/90 border border-ocean-700 text-center rounded-xl py-2 px-4 text-sm text-gold-200 placeholder-slate-500 focus:outline-none focus:border-gold-500">
+          <input type="text" id="focusGoalInput" placeholder="Bugün hangi eseri inşa ediyorsun? (Örn: Kod, Kitap, Tasarım...)" class="w-full bg-ocean-950/90 border border-ocean-700 text-center rounded-xl py-2 px-4 text-sm text-gold-200 placeholder-slate-500 focus:outline-none focus:border-gold-500">
         </div>
 
         <!-- Zaman Süresi Seçimi -->
@@ -554,22 +540,29 @@
         </div>
 
         <!-- Sayaç Kontrolleri -->
-        <div class="flex justify-center items-center gap-4 mt-8">
+        <div class="flex justify-center items-center gap-3 mt-8">
           <button id="startTimerBtn" class="px-8 py-3.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-ocean-950 font-bold text-sm tracking-wide shadow-lg shadow-gold-500/20 transition-all flex items-center gap-2">
             <i data-lucide="play" class="w-4 h-4 fill-current"></i> Başla
           </button>
           <button id="resetTimerBtn" class="px-5 py-3.5 rounded-xl border border-ocean-700 hover:border-slate-500 bg-ocean-900 text-slate-300 text-sm font-semibold transition-all">
             <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
           </button>
-          <button id="zenModeBtn" title="Zen Modu (Tüm dikkat dağıtıcıları gizle)" class="px-5 py-3.5 rounded-xl border border-sky-800/80 bg-sky-950/50 hover:bg-sky-900 text-sky-300 text-sm font-semibold transition-all flex items-center gap-1.5">
+          <button id="zenModeBtn" title="Zen Modu (Tüm dikkat dağıtıcıları gizle - Kısayol: Z)" class="px-5 py-3.5 rounded-xl border border-sky-800/80 bg-sky-950/50 hover:bg-sky-900 text-sky-300 text-sm font-semibold transition-all flex items-center gap-1.5">
             <i data-lucide="maximize-2" class="w-4 h-4"></i> Zen Modu
           </button>
         </div>
       </div>
 
-      <!-- PANEL 2: NEFES-İ SÜKUN (4-7-8) -->
-      <div id="breathPanel" class="hidden text-center py-6">
-        <p class="text-xs uppercase tracking-widest text-slate-400 mb-6">4 sn Al — 7 sn Tut — 8 sn Ver</p>
+      <!-- PANEL 2: NEFES-İ SÜKUN (ÇOK MODLU) -->
+      <div id="breathPanel" class="hidden text-center py-4">
+        <!-- Ritim Seçici -->
+        <div class="max-w-xs mx-auto mb-6">
+          <select id="breathPatternSelect" class="w-full bg-ocean-950 border border-ocean-700 text-slate-200 text-xs rounded-xl px-3 py-2 text-center outline-none focus:border-gold-500">
+            <option value="478">Sükun Nefesi (4-7-8) — Sinir Sistemi Dinginliği</option>
+            <option value="box">Kutu Nefesi (4-4-4-4) — Stoic Soğukkanlılık</option>
+            <option value="resonance">Rezonans (5-5) — Kalp Senkronizasyonu</option>
+          </select>
+        </div>
         
         <div class="relative w-48 h-48 mx-auto flex items-center justify-center my-6">
           <div id="breathCircle" class="w-40 h-40 rounded-full border-4 border-gold-500/60 bg-gradient-to-tr from-sky-900/40 to-gold-600/30 flex items-center justify-center transition-all">
@@ -596,22 +589,31 @@
   <!-- BÖLÜM 4: HİKMET SANDIĞI & KART ÜRETİCİ -->
   <!-- ========================================== -->
   <section id="hikmet" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-ocean-800">
-    <div class="text-center mb-12">
+    <div class="text-center mb-10">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ocean-800 border border-ocean-700 text-slate-300 text-xs font-semibold uppercase tracking-wider mb-3">
         <i data-lucide="quote" class="w-3.5 h-3.5 text-gold-400"></i> Hakikat Aynası
       </div>
       <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Hikmet Sandığı & Kart Üreteci</h2>
       <p class="text-slate-400 text-sm sm:text-base max-w-xl mx-auto mt-2">
-        Manifestodan süzülen aforizmaları keşfet, filtrele ve dilediğin sözü yüksek çözünürlüklü sosyal medya görsel kartı olarak indir.
+        Manifestodan ve klasik irfandan süzülen 40+ aforizmayı arayın, filtreleyin ve dilediğinizi 1080x1080 HD kart olarak indirin.
       </p>
 
+      <!-- Arama Çubuğu -->
+      <div class="max-w-md mx-auto mt-6">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="quoteSearchInput" placeholder="Hikmet metni, yazar veya temada ara..." class="w-full bg-ocean-950/80 border border-ocean-700 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-gold-500">
+        </div>
+      </div>
+
       <!-- Kategori Filtreleri -->
-      <div class="flex flex-wrap justify-center gap-2 mt-6" id="quoteFilterContainer">
-        <button class="quote-filter-btn active px-3 py-1.5 rounded-full text-xs font-medium border border-gold-500 bg-gold-500/20 text-gold-300" data-filter="all">Tümü</button>
-        <button class="quote-filter-btn px-3 py-1.5 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="derya">Derya & Metanet</button>
-        <button class="quote-filter-btn px-3 py-1.5 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="ihlas">İhlas & Hürriyet</button>
-        <button class="quote-filter-btn px-3 py-1.5 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="tasavvuf">İrfan & Tasavvuf</button>
-        <button class="quote-filter-btn px-3 py-1.5 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="stoa">Stoa & Felsefe</button>
+      <div class="flex flex-wrap justify-center gap-2 mt-4" id="quoteFilterContainer">
+        <button class="quote-filter-btn active px-3 py-1 rounded-full text-xs font-medium border border-gold-500 bg-gold-500/20 text-gold-300" data-filter="all">Tümü</button>
+        <button class="quote-filter-btn px-3 py-1 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="derya">Derya & Metanet</button>
+        <button class="quote-filter-btn px-3 py-1 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="ihlas">İhlas & Hürriyet</button>
+        <button class="quote-filter-btn px-3 py-1 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="tasavvuf">İrfan & Tasavvuf</button>
+        <button class="quote-filter-btn px-3 py-1 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="stoa">Stoa & Hikmet</button>
+        <button class="quote-filter-btn px-3 py-1 rounded-full text-xs font-medium border border-ocean-700 bg-ocean-850 text-slate-300 hover:border-gold-500" data-filter="fav">⭐ Favorilerim</button>
       </div>
     </div>
 
@@ -620,7 +622,7 @@
       <!-- JavaScript ile yüklenecek -->
     </div>
 
-    <!-- Kart İndirme Modal/Gizli Canvas -->
+    <!-- Kart İndirme Gizli Canvas -->
     <canvas id="exportCardCanvas" width="1080" height="1080" class="hidden"></canvas>
   </section>
 
@@ -639,6 +641,18 @@
     </div>
 
     <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-ocean-700 space-y-6">
+      <!-- Kategori Etiketi -->
+      <div class="flex items-center gap-3">
+        <label for="journalTagSelect" class="text-xs font-bold uppercase tracking-wider text-slate-400">Tefekkür Türü:</label>
+        <select id="journalTagSelect" class="bg-ocean-950 border border-ocean-700 rounded-lg px-3 py-1.5 text-xs text-gold-300 outline-none">
+          <option value="Tefekkür">Tefekkür & Sükun</option>
+          <option value="Zırh">Gürültü Zırhı</option>
+          <option value="İnşa">Eserin İnşası</option>
+          <option value="Merhamet">Merhamet Makamı</option>
+          <option value="Şükür">Şükür & Mahviyet</option>
+        </select>
+      </div>
+
       <!-- Soru 1 -->
       <div>
         <label for="journalNoise" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
@@ -658,19 +672,25 @@
       <!-- Soru 3 -->
       <div>
         <label for="journalMercy" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
-          3. Merhamet Makamı: Bugün beni inciten veya saldıran kime öfke yerine acıma ve olgunlukla baktım?
+          3. Merhamet Makamı: Bugün beni inciten kime öfke yerine acıma ve olgunlukla baktım?
         </label>
         <textarea id="journalMercy" rows="2" placeholder="Örn: Onun kendi içindeki amaçsızlık zindanını fark edip ona benzememeyi seçtim..." class="w-full bg-ocean-950 border border-ocean-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-gold-500"></textarea>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
         <button id="saveJournalBtn" class="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-ocean-950 font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2">
           <i data-lucide="check" class="w-4 h-4"></i> Günlüğü Kaydet
         </button>
 
-        <div class="flex gap-2 text-xs">
-          <button id="exportJournalMdBtn" class="px-3 py-2 rounded-lg bg-ocean-800 hover:bg-ocean-700 text-slate-300 flex items-center gap-1.5 transition-colors">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Markdown İndir
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button id="exportJournalMdBtn" class="px-3 py-2 rounded-lg bg-ocean-800 hover:bg-ocean-700 text-slate-300 flex items-center gap-1.5 transition-colors" title="Markdown Olarak İndir">
+            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> MD İndir
+          </button>
+          <button id="exportJournalJsonBtn" class="px-3 py-2 rounded-lg bg-ocean-800 hover:bg-ocean-700 text-slate-300 flex items-center gap-1.5 transition-colors" title="JSON Yedeği İndir">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> Yedekle
+          </button>
+          <button id="importJournalJsonBtn" class="px-3 py-2 rounded-lg bg-ocean-800 hover:bg-ocean-700 text-slate-300 flex items-center gap-1.5 transition-colors" title="JSON Yedeğini Geri Yükle">
+            <i data-lucide="upload" class="w-3.5 h-3.5"></i> Yükle
           </button>
           <button id="clearJournalBtn" class="px-3 py-2 rounded-lg bg-red-950/40 hover:bg-red-900/50 text-red-300 border border-red-800/40 transition-colors">
             Temizle
@@ -683,8 +703,7 @@
         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
           <i data-lucide="history" class="w-3.5 h-3.5 text-gold-400"></i> Geçmiş Tefekkür Notları
         </h4>
-        <div id="journalEntriesList" class="space-y-3 max-h-60 overflow-y-auto pr-2">
-          <!-- Kayıtlar buraya eklenir -->
+        <div id="journalEntriesList" class="space-y-3 max-h-64 overflow-y-auto pr-2">
           <p class="text-xs text-slate-500 italic">Henüz bir kayıt bulunmuyor. İlk tefekkürünüzü yukarıdan kaydedin.</p>
         </div>
       </div>
@@ -701,14 +720,12 @@
       </div>
       <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">İhlas & Sarsılmazlık Testi</h2>
       <p class="text-slate-400 text-sm max-w-lg mx-auto mt-2">
-        Ne kadar derya gibisin, ne kadar rüzgarda savrulan yaprak? 5 soruluk irfani öz değerlendirme.
+        Ne kadar derya gibisin, ne kadar rüzgarda savrulan yaprak? 6 soruluk irfani öz değerlendirme.
       </p>
     </div>
 
     <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-ocean-700 space-y-6" id="quizContainer">
-      <div id="quizQuestions" class="space-y-6">
-        <!-- JS ile 5 soru yüklenecek -->
-      </div>
+      <div id="quizQuestions" class="space-y-6"></div>
 
       <div class="pt-4 border-t border-ocean-800 flex justify-center">
         <button id="calculateQuizBtn" class="px-8 py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-ocean-950 font-bold text-sm tracking-wider uppercase transition-all shadow-lg shadow-gold-500/20">
@@ -723,6 +740,45 @@
       </div>
     </div>
   </section>
+
+  <!-- ========================================== -->
+  <!-- MODAL: KLAVYE KISAYOLLARI REHBERİ -->
+  <!-- ========================================== -->
+  <div id="shortcutsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel-gold max-w-md w-full p-6 rounded-3xl border border-gold-500/40 shadow-2xl relative">
+      <button id="closeShortcutsModalBtn" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 mb-4">
+        <i data-lucide="keyboard" class="w-5 h-5 text-gold-400"></i>
+        <h3 class="font-cinzel text-xl font-bold text-white">Klavye Kısayolları</h3>
+      </div>
+
+      <div class="space-y-2.5 text-xs text-slate-300 divide-y divide-ocean-800">
+        <div class="flex items-center justify-between pt-2">
+          <span>Odak Sayacını Başlat / Duraklat</span>
+          <kbd class="px-2 py-1 rounded bg-ocean-800 font-mono text-gold-400 border border-ocean-700">Space</kbd>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <span>Ambiyans Sesini Aç / Kapat</span>
+          <kbd class="px-2 py-1 rounded bg-ocean-800 font-mono text-gold-400 border border-ocean-700">M</kbd>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <span>Temayı Değiştir (Okyanus / Obsidiyen / Parşömen)</span>
+          <kbd class="px-2 py-1 rounded bg-ocean-800 font-mono text-gold-400 border border-ocean-700">T</kbd>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <span>Zen Modu Aç / Kapat</span>
+          <kbd class="px-2 py-1 rounded bg-ocean-800 font-mono text-gold-400 border border-ocean-700">Z</kbd>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <span>Bu Kısayol Penceresini Aç / Kapat</span>
+          <kbd class="px-2 py-1 rounded bg-ocean-800 font-mono text-gold-400 border border-ocean-700">?</kbd>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================== -->
   <!-- ALT BİLGİ (FOOTER) -->
@@ -743,7 +799,8 @@
 
       <div class="flex items-center space-x-4 text-xs text-slate-400">
         <a href="#manifesto" class="hover:text-gold-400 transition-colors">Manifesto</a>
-        <a href="#kalkan" class="hover:text-gold-400 transition-colors">Pusula</a>
+        <a href="#kalkan" class="hover:text-gold-400 transition-colors">Kalkan</a>
+        <a href="#matris" class="hover:text-gold-400 transition-colors">Matris</a>
         <a href="#odak" class="hover:text-gold-400 transition-colors">Odak</a>
         <a href="https://github.com/bahattinyunus/Derya-Bulanmaz" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
           <i data-lucide="github" class="w-4 h-4 inline"></i> GitHub

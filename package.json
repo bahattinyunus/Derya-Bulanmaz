@@ -1,7 +1,7 @@
 {
   "name": "derya-bulanmaz",
-  "version": "1.0.0",
-  "description": "Kesretin Gürültüsünden Vahdetin İnşasına — Felsefi Manifesto ve Dijital İrfan Portalı",
+  "version": "1.1.0",
+  "description": "Kesretin Gürültüsünden Vahdetin İnşasına — Felsefi Manifesto, Müsbet Hareket Matrisi ve Dijital İrfan Portalı",
   "main": "cli.js",
   "bin": {
     "derya": "./cli.js"
@@ -11,8 +11,14 @@
     "serve": "node cli.js serve 3000",
     "quote": "node cli.js quote",
     "manifesto": "node cli.js manifesto",
+    "shield": "node cli.js shield",
+    "matrix": "node cli.js matrix",
+    "breathe": "node cli.js breathe",
     "focus": "node cli.js focus 25",
-    "test": "node cli.js quote"
+    "journal": "node cli.js journal",
+    "stats": "node cli.js stats",
+    "card": "node cli.js card",
+    "test": "node test/integrity.test.js"
   },
   "keywords": [
     "derya-bulanmaz",
@@ -23,7 +29,9 @@
     "deep-work",
     "focus",
     "ihlas",
-    "musbet-hareket"
+    "musbet-hareket",
+    "pwa",
+    "ambient-sound"
   ],
   "author": "Bahattin Yunus",
   "license": "MIT",

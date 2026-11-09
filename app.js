@@ -1,5 +1,5 @@
 /**
- * DERYA BULANMAZ - Temel Uygulama Motoru
+ * DERYA BULANMAZ - Temel Uygulama Motoru v2.0
  * Kesretin Gürültüsünden Vahdetin İnşasına
  */
 
@@ -10,21 +10,89 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Modülleri Başlat
+  initToast();
+  initThemeEngine();
   initOceanCanvas();
   initAmbientSound();
   initReadingTools();
   initCompass();
+  initMatrixEngine();
   initFocusTimer();
   initBreathingExercise();
   initQuotesAndCards();
   initJournal();
   initQuiz();
+  initKeyboardShortcuts();
   initMobileMenu();
+  initServiceWorker();
 });
+
+/* ==========================================================================
+   0. TOAST BİLDİRİM SİSTEMİ
+   ========================================================================== */
+let showToast = (message, iconName = 'sparkles') => {
+  const toast = document.getElementById('toastNotification');
+  if (!toast) return;
+  toast.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 text-gold-400"></i> <span>${message}</span>`;
+  if (window.lucide) lucide.createIcons();
+  toast.classList.remove('toast-hidden');
+  toast.classList.add('toast-visible');
+
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.classList.remove('toast-visible');
+    toast.classList.add('toast-hidden');
+  }, 3200);
+};
+
+/* ==========================================================================
+   0.1. TEMA DEĞİŞTİRME MOTORU (OKYANUS, OBSİDİYEN, PARŞÖMEN)
+   ========================================================================== */
+function initThemeEngine() {
+  const themeBtn = document.getElementById('themeToggleBtn');
+  const themes = ['ocean', 'obsidian', 'parchment'];
+  const themeLabels = {
+    ocean: 'Okyanus Gece',
+    obsidian: 'Saf Obsidiyen',
+    parchment: 'İrfan Parşömeni'
+  };
+
+  let currentTheme = localStorage.getItem('derya_theme') || 'ocean';
+
+  function applyTheme(theme) {
+    document.body.classList.remove('theme-obsidian', 'theme-parchment');
+    if (theme === 'obsidian') {
+      document.body.classList.add('theme-obsidian');
+    } else if (theme === 'parchment') {
+      document.body.classList.add('theme-parchment');
+    }
+    localStorage.setItem('derya_theme', theme);
+    if (themeBtn) {
+      themeBtn.title = `Mevcut Tema: ${themeLabels[theme]} (Değiştirmek için tıkla)`;
+    }
+  }
+
+  applyTheme(currentTheme);
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
+      currentTheme = themes[nextIdx];
+      applyTheme(currentTheme);
+      showToast(`Tema değiştirildi: ${themeLabels[currentTheme]}`, 'palette');
+    });
+  }
+
+  window.toggleNextTheme = () => {
+    if (themeBtn) themeBtn.click();
+  };
+}
 
 /* ==========================================================================
    1. İNTERAKTİF OKYANUS TUVALİ & ÇAMUR SOĞURMA SİMÜLASYONU
    ========================================================================== */
+let triggerCanvasMud = null;
+
 function initOceanCanvas() {
   const canvas = document.getElementById('oceanCanvas');
   if (!canvas) return;
@@ -47,7 +115,7 @@ function initOceanCanvas() {
 
   // Işık ve Yıldız Partikülleri
   const lightParticles = [];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 45; i++) {
     lightParticles.push({
       x: Math.random() * width,
       y: Math.random() * height * 0.7,
@@ -60,6 +128,7 @@ function initOceanCanvas() {
   // Dışarıdan atılan "Çamur / Gürültü" Partikülleri
   let mudParticles = [];
   let floatingTexts = [];
+  let pearls = [];
 
   let step = 0;
 
@@ -67,10 +136,23 @@ function initOceanCanvas() {
     ctx.clearRect(0, 0, width, height);
 
     // Derinlik Gradyanı
+    const isObsidian = document.body.classList.contains('theme-obsidian');
+    const isParchment = document.body.classList.contains('theme-parchment');
+
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, '#050a14');
-    gradient.addColorStop(0.5, '#070d18');
-    gradient.addColorStop(1, '#020617');
+    if (isObsidian) {
+      gradient.addColorStop(0, '#000000');
+      gradient.addColorStop(0.5, '#050505');
+      gradient.addColorStop(1, '#0a0a0a');
+    } else if (isParchment) {
+      gradient.addColorStop(0, '#120d07');
+      gradient.addColorStop(0.5, '#18120a');
+      gradient.addColorStop(1, '#241a0e');
+    } else {
+      gradient.addColorStop(0, '#050a14');
+      gradient.addColorStop(0.5, '#070d18');
+      gradient.addColorStop(1, '#020617');
+    }
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
@@ -97,13 +179,13 @@ function initOceanCanvas() {
       ctx.fill();
     });
 
-    // Çamur Partikülleri (Gittikçe küçülür, temizlenir ve deryada kaybolur)
+    // Çamur Partikülleri (Deryada çözünür ve dibe indikçe inci tanelerine dönüşür)
     for (let i = mudParticles.length - 1; i >= 0; i--) {
       const m = mudParticles[i];
       m.x += m.vx;
       m.y += m.vy;
-      m.vy += 0.08; // Yerçekimi
-      m.alpha -= 0.012; // Derya çamuru temizler
+      m.vy += 0.08;
+      m.alpha -= 0.014;
       m.size *= 0.985;
 
       ctx.fillStyle = `rgba(${m.r}, ${m.g}, ${m.b}, ${Math.max(0, m.alpha)})`;
@@ -111,23 +193,44 @@ function initOceanCanvas() {
       ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
       ctx.fill();
 
+      // Tam kaybolurken minik altın parıltı bırak
+      if (m.alpha <= 0.15 && Math.random() < 0.08) {
+        pearls.push({
+          x: m.x,
+          y: m.y,
+          size: Math.random() * 2 + 1,
+          alpha: 0.8,
+          vy: -0.5
+        });
+      }
+
       if (m.alpha <= 0 || m.size <= 0.5) {
         mudParticles.splice(i, 1);
       }
     }
 
+    // İnciler / Işık damlacıkları (Derya çamuru dönüştürdü)
+    for (let i = pearls.length - 1; i >= 0; i--) {
+      const pr = pearls[i];
+      pr.y += pr.vy;
+      pr.alpha -= 0.01;
+      ctx.fillStyle = `rgba(250, 204, 21, ${Math.max(0, pr.alpha)})`;
+      ctx.beginPath();
+      ctx.arc(pr.x, pr.y, pr.size, 0, Math.PI * 2);
+      ctx.fill();
+      if (pr.alpha <= 0) pearls.splice(i, 1);
+    }
+
     // Yüzen Hakikat Metinleri
     for (let i = floatingTexts.length - 1; i >= 0; i--) {
       const ft = floatingTexts[i];
-      ft.y -= 0.6;
-      ft.alpha -= 0.01;
+      ft.y += ft.vy;
+      ft.alpha -= 0.008;
 
-      ctx.save();
       ctx.font = 'italic 16px "Playfair Display", Georgia, serif';
       ctx.fillStyle = `rgba(226, 177, 104, ${Math.max(0, ft.alpha)})`;
       ctx.textAlign = 'center';
       ctx.fillText(ft.text, ft.x, ft.y);
-      ctx.restore();
 
       if (ft.alpha <= 0) {
         floatingTexts.splice(i, 1);
@@ -140,87 +243,138 @@ function initOceanCanvas() {
 
   render();
 
-  // Çamur Atma Fonksiyonu (Dış gürültüyü deryaya fırlatma)
-  window.throwMudAtSea = function (customLabel = '') {
-    const originX = width * 0.5 + (Math.random() * 200 - 100);
-    const originY = height * 0.45;
+  // Çamur Fırlatma Fonksiyonu
+  function addMud(word) {
+    const startX = width / 2 + (Math.random() - 0.5) * 300;
+    const startY = height * 0.45;
 
-    // 40 adet çamur zerresi fırlat
+    // 40 adet koyu partikül saç
     for (let i = 0; i < 40; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 5 + 1;
       mudParticles.push({
-        x: originX,
-        y: originY,
-        vx: (Math.random() - 0.5) * 6,
-        vy: (Math.random() - 0.8) * 5,
-        size: Math.random() * 8 + 3,
-        alpha: 0.9,
-        r: 120 + Math.floor(Math.random() * 40),
-        g: 80 + Math.floor(Math.random() * 30),
-        b: 40 + Math.floor(Math.random() * 20)
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 2,
+        size: Math.random() * 5 + 3,
+        alpha: 0.85,
+        r: Math.floor(Math.random() * 40 + 70),
+        g: Math.floor(Math.random() * 30 + 50),
+        b: Math.floor(Math.random() * 20 + 30)
       });
     }
 
-    // 1 saniye sonra deryanın saflığı ortaya çıkar
-    setTimeout(() => {
-      floatingTexts.push({
-        x: originX,
-        y: originY - 20,
-        text: '🌊 Derya bulanmaz...',
-        alpha: 1.0
-      });
-    }, 700);
-  };
+    // Suyun üzerine hakikat yankısı yazdır
+    floatingTexts.push({
+      x: startX,
+      y: startY - 20,
+      vy: -0.6,
+      alpha: 1,
+      text: `“${word}” deryada kayboldu...`
+    });
+  }
 
-  // Ekrana tıklayınca da su dalgalansın
-  canvas.addEventListener('click', e => {
-    window.throwMudAtSea();
-  });
+  triggerCanvasMud = addMud;
 
-  // Arayüzdeki Çamur Butonu
-  const throwMudBtn = document.getElementById('throwMudBtn');
+  // UI Olayları
   const mudInput = document.getElementById('mudInput');
+  const throwBtn = document.getElementById('throwMudBtn');
   const mudFeedback = document.getElementById('mudFeedback');
+  const mudCountEl = document.getElementById('mudAbsorbedCount');
 
-  if (throwMudBtn && mudInput) {
-    const fireMud = () => {
-      const val = mudInput.value.trim() || 'Laf / Çamur';
-      window.throwMudAtSea(val);
-      if (mudFeedback) {
-        mudFeedback.textContent = `"${val}" atıldı; saniyeler içinde okyanusta eridi ve kayboldu.`;
-        mudFeedback.style.opacity = '1';
-        setTimeout(() => {
-          mudFeedback.style.opacity = '0';
-        }, 4000);
-      }
-      mudInput.value = '';
-    };
+  let mudCount = parseInt(localStorage.getItem('derya_mud_count') || '0', 10);
+  if (mudCountEl) mudCountEl.textContent = mudCount;
 
-    throwMudBtn.addEventListener('click', fireMud);
+  function fireMud(customWord) {
+    const rawVal = customWord || (mudInput ? mudInput.value.trim() : '');
+    const val = rawVal || 'Gürültü';
+    addMud(val);
+
+    mudCount++;
+    localStorage.setItem('derya_mud_count', mudCount);
+    if (mudCountEl) mudCountEl.textContent = mudCount;
+
+    // Ses efekti (Eğer ses motoru devredeyse)
+    if (window.playWaterSplashChime) {
+      window.playWaterSplashChime();
+    }
+
+    if (mudFeedback) {
+      const responses = [
+        `Derya bir an bile bulanmadı; "${val}" ummanın enginliğinde inciye dönüştü.`,
+        `Bir divane "${val}" attı, derya sükunetini korudu.`,
+        `Gürültü yüzeyde söndü; hakikat dipte sessizce parıldıyor.`,
+        `"${val}" bir köpük gibi söndü; deryanın vüs'ati onu yuttu.`
+      ];
+      mudFeedback.textContent = responses[Math.floor(Math.random() * responses.length)];
+      mudFeedback.style.opacity = '1';
+      setTimeout(() => {
+        if (mudFeedback) mudFeedback.style.opacity = '0';
+      }, 4000);
+    }
+
+    if (mudInput && !customWord) mudInput.value = '';
+  }
+
+  if (throwBtn) {
+    throwBtn.addEventListener('click', () => fireMud());
+  }
+
+  if (mudInput) {
     mudInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') fireMud();
     });
   }
+
+  // Çamur Hazır Butonları (Pills)
+  document.querySelectorAll('.mud-preset-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const text = pill.dataset.text || pill.textContent.trim();
+      fireMud(text);
+    });
+  });
 }
 
 /* ==========================================================================
-   2. AMBİYANS SES SENTEZLEYİCİSİ (WEB AUDIO API)
+   2. GELİŞMİŞ AMBİYANS SES SENTEZLEYİCİSİ (WEB AUDIO API - 4 SES MANZARASI)
    ========================================================================== */
 function initAmbientSound() {
   const toggleBtn = document.getElementById('ambientSoundToggle');
   const icon = document.getElementById('ambientSoundIcon');
   const text = document.getElementById('ambientSoundText');
-
-  if (!toggleBtn) return;
+  const soundscapeSelect = document.getElementById('soundscapeSelect');
 
   let audioCtx = null;
   let isPlaying = false;
-  let gainNode = null;
-  let waveOsc = null;
+  let masterGain = null;
+  let activeNodes = [];
+  let currentSoundscape = 'ocean'; // 'ocean', 'solfeggio', 'rain', 'brown'
 
-  function createOceanSound() {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function stopCurrentSound() {
+    activeNodes.forEach(node => {
+      try {
+        if (node.stop) node.stop();
+        if (node.disconnect) node.disconnect();
+      } catch (e) {}
+    });
+    activeNodes = [];
+  }
 
-    // Pembe/Beyaz Gürültü Tamponu Oluştur (Okyanus Dalgaları İçin)
+  function setupAudioContext() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+      masterGain.connect(audioCtx.destination);
+    }
+  }
+
+  // 1. Okyanus Dalgaları
+  function playOceanSound() {
+    stopCurrentSound();
+    setupAudioContext();
+
     const bufferSize = audioCtx.sampleRate * 4;
     const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
     const output = noiseBuffer.getChannelData(0);
@@ -242,158 +396,304 @@ function initAmbientSound() {
     whiteNoise.buffer = noiseBuffer;
     whiteNoise.loop = true;
 
-    // Alçak Geçiren Filtre (Dalga simülasyonu)
     const filter = audioCtx.createBiquadFilter();
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(320, audioCtx.currentTime);
 
-    // Filtre frekansını dalga gibi periyodik olarak açıp kapayan LFO
     const lfo = audioCtx.createOscillator();
-    lfo.frequency.setValueAtTime(0.12, audioCtx.currentTime); // Dalga ritmi ~8 sn
+    lfo.frequency.setValueAtTime(0.12, audioCtx.currentTime);
     const lfoGain = audioCtx.createGain();
     lfoGain.gain.setValueAtTime(260, audioCtx.currentTime);
     lfo.connect(lfoGain);
     lfoGain.connect(filter.frequency);
 
-    // 432 Hz Tefekkür / Meditatif Bas Tonal Desteği
     const droneOsc = audioCtx.createOscillator();
     droneOsc.type = 'sine';
-    droneOsc.frequency.setValueAtTime(108, audioCtx.currentTime); // 432Hz'in 2 oktav altı
+    droneOsc.frequency.setValueAtTime(108, audioCtx.currentTime);
     const droneGain = audioCtx.createGain();
     droneGain.gain.setValueAtTime(0.018, audioCtx.currentTime);
     droneOsc.connect(droneGain);
 
-    gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-
     whiteNoise.connect(filter);
-    filter.connect(gainNode);
-    droneGain.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+    filter.connect(masterGain);
+    droneGain.connect(masterGain);
 
     whiteNoise.start();
     lfo.start();
     droneOsc.start();
+
+    activeNodes.push(whiteNoise, lfo, droneOsc, filter, lfoGain, droneGain);
   }
 
-  toggleBtn.addEventListener('click', () => {
-    if (!audioCtx) {
-      createOceanSound();
-      isPlaying = true;
-    } else if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-      isPlaying = true;
-    } else if (isPlaying) {
-      audioCtx.suspend();
-      isPlaying = false;
-    } else {
-      audioCtx.resume();
-      isPlaying = true;
+  // 2. 432 Hz Solfeggio & Ney Çanağı
+  function playSolfeggioSound() {
+    stopCurrentSound();
+    setupAudioContext();
+
+    const osc432 = audioCtx.createOscillator();
+    osc432.type = 'sine';
+    osc432.frequency.setValueAtTime(432, audioCtx.currentTime);
+
+    const osc528 = audioCtx.createOscillator();
+    osc528.type = 'sine';
+    osc528.frequency.setValueAtTime(528, audioCtx.currentTime);
+
+    const subOsc = audioCtx.createOscillator();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(108, audioCtx.currentTime);
+
+    const toneGain = audioCtx.createGain();
+    toneGain.gain.setValueAtTime(0.045, audioCtx.currentTime);
+
+    const subGain = audioCtx.createGain();
+    subGain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+
+    osc432.connect(toneGain);
+    osc528.connect(toneGain);
+    subOsc.connect(subGain);
+
+    toneGain.connect(masterGain);
+    subGain.connect(masterGain);
+
+    osc432.start();
+    osc528.start();
+    subOsc.start();
+
+    activeNodes.push(osc432, osc528, subOsc, toneGain, subGain);
+  }
+
+  // 3. Dingin Gece Yağmuru
+  function playRainSound() {
+    stopCurrentSound();
+    setupAudioContext();
+
+    const bufferSize = audioCtx.sampleRate * 2;
+    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * 0.06;
     }
 
-    // UI Güncelle
-    if (isPlaying) {
-      toggleBtn.classList.add('border-gold-500', 'bg-gold-500/10', 'text-gold-300');
-      if (icon) icon.setAttribute('data-lucide', 'volume-2');
-      if (text) text.textContent = 'Okyanus Sesi Açık';
-    } else {
-      toggleBtn.classList.remove('border-gold-500', 'bg-gold-500/10', 'text-gold-300');
-      if (icon) icon.setAttribute('data-lucide', 'volume-x');
-      if (text) text.textContent = 'Sükunet Sesi';
+    const rainSource = audioCtx.createBufferSource();
+    rainSource.buffer = noiseBuffer;
+    rainSource.loop = true;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(900, audioCtx.currentTime);
+    filter.Q.setValueAtTime(0.8, audioCtx.currentTime);
+
+    rainSource.connect(filter);
+    filter.connect(masterGain);
+    rainSource.start();
+
+    activeNodes.push(rainSource, filter);
+  }
+
+  // 4. Kahverengi Gürültü (Derin Odak)
+  function playBrownNoise() {
+    stopCurrentSound();
+    setupAudioContext();
+
+    const bufferSize = audioCtx.sampleRate * 2;
+    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + 0.02 * white) / 1.02;
+      lastOut = output[i];
+      output[i] *= 0.35;
     }
-    if (window.lucide) lucide.createIcons();
-  });
+
+    const brownSource = audioCtx.createBufferSource();
+    brownSource.buffer = noiseBuffer;
+    brownSource.loop = true;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, audioCtx.currentTime);
+
+    brownSource.connect(filter);
+    filter.connect(masterGain);
+    brownSource.start();
+
+    activeNodes.push(brownSource, filter);
+  }
+
+  function startSelectedSound() {
+    if (currentSoundscape === 'solfeggio') playSolfeggioSound();
+    else if (currentSoundscape === 'rain') playRainSound();
+    else if (currentSoundscape === 'brown') playBrownNoise();
+    else playOceanSound();
+  }
+
+  // Su Damlası / Çan Çalma Fonksiyonu (Genel kullanım için dışarı aktar)
+  window.playWaterSplashChime = function () {
+    if (!audioCtx) return;
+    try {
+      const chimeOsc = audioCtx.createOscillator();
+      const chimeGain = audioCtx.createGain();
+      chimeOsc.type = 'sine';
+      chimeOsc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      chimeOsc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.6);
+
+      chimeGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      chimeGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
+
+      chimeOsc.connect(chimeGain);
+      chimeGain.connect(masterGain);
+      chimeOsc.start();
+      chimeOsc.stop(audioCtx.currentTime + 0.65);
+    } catch (e) {}
+  };
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      if (!audioCtx) {
+        setupAudioContext();
+        startSelectedSound();
+        isPlaying = true;
+      } else if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+        startSelectedSound();
+        isPlaying = true;
+      } else if (isPlaying) {
+        audioCtx.suspend();
+        isPlaying = false;
+      } else {
+        audioCtx.resume();
+        startSelectedSound();
+        isPlaying = true;
+      }
+
+      if (isPlaying) {
+        toggleBtn.classList.add('border-gold-500', 'bg-gold-500/10', 'text-gold-300');
+        if (icon) icon.setAttribute('data-lucide', 'volume-2');
+        if (text) text.textContent = 'Ambiyans Açık';
+        showToast('Ambiyans sesi açıldı', 'volume-2');
+      } else {
+        toggleBtn.classList.remove('border-gold-500', 'bg-gold-500/10', 'text-gold-300');
+        if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        if (text) text.textContent = 'Sükunet Sesi';
+        showToast('Ambiyans sesi kapatıldı', 'volume-x');
+      }
+      if (window.lucide) lucide.createIcons();
+    });
+  }
+
+  if (soundscapeSelect) {
+    soundscapeSelect.addEventListener('change', e => {
+      currentSoundscape = e.target.value;
+      if (isPlaying) {
+        startSelectedSound();
+        showToast(`Ambiyans modu: ${e.target.options[e.target.selectedIndex].text}`, 'music');
+      }
+    });
+  }
+
+  window.toggleAudioMute = () => {
+    if (toggleBtn) toggleBtn.click();
+  };
 }
 
 /* ==========================================================================
-   3. OKUMA ARAÇLARI: TİPOGRAFİ, İLERLEME ÇUBUĞU & SESLENDİRME
+   3. MANİFESTO OKUMA ARAÇLARI & SESLENDİRME
    ========================================================================== */
 function initReadingTools() {
   const progressBar = document.getElementById('readProgressBar');
-  const manifesto = document.getElementById('manifestoContent');
-  const serifBtn = document.getElementById('fontToggleSerif');
-  const sansBtn = document.getElementById('fontToggleSans');
-  const incBtn = document.getElementById('fontSizeInc');
-  const decBtn = document.getElementById('fontSizeDec');
+  const manifesto = document.getElementById('manifesto');
+  const fontSerifBtn = document.getElementById('fontToggleSerif');
+  const fontSansBtn = document.getElementById('fontToggleSans');
+  const fontIncBtn = document.getElementById('fontSizeInc');
+  const fontDecBtn = document.getElementById('fontSizeDec');
+  const content = document.getElementById('manifestoContent');
   const readAloudBtn = document.getElementById('readAloudBtn');
   const readAloudText = document.getElementById('readAloudText');
 
-  // Okuma İlerleme Çubuğu
   window.addEventListener('scroll', () => {
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (window.scrollY / totalHeight) * 100;
-    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (!manifesto || !progressBar) return;
+    const rect = manifesto.getBoundingClientRect();
+    const totalHeight = manifesto.offsetHeight - window.innerHeight;
+    const scrolled = -rect.top;
+    if (scrolled > 0 && totalHeight > 0) {
+      const pct = Math.min(100, Math.max(0, (scrolled / totalHeight) * 100));
+      progressBar.style.width = pct + '%';
+    } else if (scrolled <= 0) {
+      progressBar.style.width = '0%';
+    }
   });
 
-  // Font Değişimi
-  let currentFontSize = 18;
-  if (serifBtn && sansBtn && manifesto) {
-    serifBtn.addEventListener('click', () => {
-      manifesto.classList.remove('font-sans-reading');
-      manifesto.classList.add('font-serif-reading');
-      serifBtn.classList.add('border-gold-500/40', 'bg-gold-500/10', 'text-gold-300');
-      sansBtn.classList.remove('border-gold-500/40', 'bg-gold-500/10', 'text-gold-300');
+  if (fontSerifBtn && fontSansBtn && content) {
+    fontSerifBtn.addEventListener('click', () => {
+      content.classList.remove('font-sans-reading');
+      content.classList.add('font-serif-reading');
+      fontSerifBtn.classList.add('bg-ocean-800', 'text-gold-400');
+      fontSansBtn.classList.remove('bg-ocean-800', 'text-gold-400');
     });
 
-    sansBtn.addEventListener('click', () => {
-      manifesto.classList.remove('font-serif-reading');
-      manifesto.classList.add('font-sans-reading');
-      sansBtn.classList.add('border-gold-500/40', 'bg-gold-500/10', 'text-gold-300');
-      serifBtn.classList.remove('border-gold-500/40', 'bg-gold-500/10', 'text-gold-300');
+    fontSansBtn.addEventListener('click', () => {
+      content.classList.remove('font-serif-reading');
+      content.classList.add('font-sans-reading');
+      fontSansBtn.classList.add('bg-ocean-800', 'text-gold-400');
+      fontSerifBtn.classList.remove('bg-ocean-800', 'text-gold-400');
     });
   }
 
-  if (incBtn && decBtn && manifesto) {
-    incBtn.addEventListener('click', () => {
+  let currentFontSize = 18;
+  if (fontIncBtn && content) {
+    fontIncBtn.addEventListener('click', () => {
       if (currentFontSize < 26) {
         currentFontSize += 2;
-        manifesto.style.fontSize = `${currentFontSize}px`;
-      }
-    });
-
-    decBtn.addEventListener('click', () => {
-      if (currentFontSize > 14) {
-        currentFontSize -= 2;
-        manifesto.style.fontSize = `${currentFontSize}px`;
+        content.style.fontSize = currentFontSize + 'px';
       }
     });
   }
 
-  // Web Speech API ile Manifesto Okuma
-  let isSpeaking = false;
-  if (readAloudBtn && 'speechSynthesis' in window) {
+  if (fontDecBtn && content) {
+    fontDecBtn.addEventListener('click', () => {
+      if (currentFontSize > 14) {
+        currentFontSize -= 2;
+        content.style.fontSize = currentFontSize + 'px';
+      }
+    });
+  }
+
+  if (readAloudBtn && window.speechSynthesis) {
+    let isSpeaking = false;
+    let utterance = null;
+
     readAloudBtn.addEventListener('click', () => {
       if (isSpeaking) {
         window.speechSynthesis.cancel();
         isSpeaking = false;
         if (readAloudText) readAloudText.textContent = 'Sesli Dinle';
-        return;
+        readAloudBtn.classList.remove('bg-gold-500/20', 'border-gold-500', 'text-gold-300');
+      } else {
+        const textToRead = content ? content.innerText : '';
+        utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = 'tr-TR';
+        utterance.rate = 0.95;
+
+        utterance.onend = () => {
+          isSpeaking = false;
+          if (readAloudText) readAloudText.textContent = 'Sesli Dinle';
+          readAloudBtn.classList.remove('bg-gold-500/20', 'border-gold-500', 'text-gold-300');
+        };
+
+        window.speechSynthesis.speak(utterance);
+        isSpeaking = true;
+        if (readAloudText) readAloudText.textContent = 'Durdur';
+        readAloudBtn.classList.add('bg-gold-500/20', 'border-gold-500', 'text-gold-300');
       }
-
-      const textToRead = manifesto ? manifesto.innerText : '';
-      const utterance = new SpeechSynthesisUtterance(textToRead);
-      utterance.lang = 'tr-TR';
-      utterance.rate = 0.92; // Dingin, ağırbaşlı bir tempo
-
-      utterance.onend = () => {
-        isSpeaking = false;
-        if (readAloudText) readAloudText.textContent = 'Sesli Dinle';
-      };
-
-      utterance.onerror = () => {
-        isSpeaking = false;
-        if (readAloudText) readAloudText.textContent = 'Sesli Dinle';
-      };
-
-      window.speechSynthesis.speak(utterance);
-      isSpeaking = true;
-      if (readAloudText) readAloudText.textContent = 'Durdur';
     });
   }
 }
 
 /* ==========================================================================
-   4. GÜRÜLTÜ KALKANI & ZİHİN PUSULASI VERİ MOTORU
+   4. GÜRÜLTÜ KALKANI (PUSULA)
    ========================================================================== */
 function initCompass() {
   const situations = {
@@ -506,7 +806,6 @@ function initCompass() {
       });
       btn.classList.add('active', 'border-gold-500/40', 'bg-gold-500/10', 'text-gold-200');
       btn.classList.remove('border-ocean-800', 'bg-ocean-850', 'text-slate-300');
-
       renderCompass(btn.dataset.situation);
     });
   });
@@ -514,30 +813,234 @@ function initCompass() {
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       const data = situations[currentSituationKey];
-      const textToCopy = `[Gürültü Kalkanı]\nTeşhis: ${data.diagTitle}\nZırh: ${data.shieldText}\nEylem: ${data.actionText}\nÖğüt: ${data.quote}`;
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        copyBtn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Kopyalandı';
-        if (window.lucide) lucide.createIcons();
-        setTimeout(() => {
-          copyBtn.innerHTML = '<i data-lucide="copy" class="w-3.5 h-3.5"></i> Kopyala';
-          if (window.lucide) lucide.createIcons();
-        }, 2000);
+      const copyText = `[Derya Bulanmaz - Gürültü Kalkanı]\n${data.diagTitle}\n${data.diagText}\n\nZırh: ${data.shieldText}\nMüsbet Eylem: ${data.actionText}\nHikmet: ${data.quote}`;
+      navigator.clipboard.writeText(copyText).then(() => {
+        showToast('Kalkan reçetesi panoya kopyalandı', 'copy');
       });
     });
   }
 }
 
 /* ==========================================================================
-   5. DERYA SESSİZLİĞİ & DERİN ODAK SAYACI (POMODORO & ZEN MODU)
+   5. YENİ MODÜL: MÜSBET HAREKET MATRİSİ & VAKA ÇÖZÜCÜ (INTERACTIVE DILEMMA ENGINE)
+   ========================================================================== */
+function initMatrixEngine() {
+  const container = document.getElementById('matrixContainer');
+  const tabsContainer = document.getElementById('matrixTabs');
+  const contentArea = document.getElementById('matrixContentArea');
+  const exportToJournalBtn = document.getElementById('matrixToJournalBtn');
+  const copyMatrixBtn = document.getElementById('matrixCopyBtn');
+
+  if (!container || !contentArea) return;
+
+  let dilemmas = [];
+  let activeDilemma = null;
+
+  // Fallback varsayılan veriler
+  const fallbackDilemmas = [
+    {
+      id: 'linc_ve_iftira',
+      title: 'Sosyal Medyada veya Toplulukta Haksız Linç & Karalama',
+      category: 'Dış Tehdit',
+      badge: 'Yüksek Gürültü',
+      summary: 'Kalabalıkların ya da dijital güruhların ürettiğiniz eseri, şahsınızı veya niyetinizi çarpıtarak topluca saldırması.',
+      diagnostic: 'René Girard\'ın Mimetik Teorisi uyarınca kitleler kendi suçluluklarını bir günah keçisine boşaltırlar. Gustave Le Bon\'a göre kitlede akıl kaybolur; yerini kör histeri alır.',
+      enfus_mirror: 'Nefsim neden bu kadar yaralandı? Çünkü gizli bir onaylanma beklentim vardı. Derya olan bir ruh, bardağın alacağı bir kaşık çamurla bulanmaz. Hatan varsa hakikate teslim ol; iftira ise bil ki kir güneşin ışığına yapışmaz.',
+      lisan_i_hal: 'Tek kelime cevap verme. Savunma metni yazma. Kavgaya girmek, gürültücünün bataklığına inip onun kurallarıyla boğulmaktır. Sessizlik, zalimin yüzüne inen en asil hakikat sillesidir.',
+      eser_insasi: 'Bu haksız saldırının doğurduğu adrenalini hemen 45 dakikalık bir derin inşa seansına aktar. Eserine öyle bir tuğla daha ekle ki, o tuğla onların binlerce gürültüsünden daha gür ses çıkarsın.',
+      merhamet_makami: 'Sana saldıranların gece yastığa baş koyduklarında hissettikleri korkunç gayesizlik zindanına acı. Kötülüğe en büyük ceza, onlara benzememektir.',
+      action_checklist: [
+        'Sosyal medya bildirimlerini 24 saatliğine sessize al.',
+        'Klavyeden elini çekip 10 derin sükun nefesi al (4-7-8 ritmi).',
+        'Yarım kalan eserinin başına oturup 40 dakika kesintisiz çalış.'
+      ],
+      prescribed_quote: {
+        text: 'Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.',
+        author: 'Risale-i Nur Külliyatı'
+      }
+    }
+  ];
+
+  fetch('./data/dilemmas.json')
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        dilemmas = data;
+        renderTabs();
+        selectDilemma(dilemmas[0]);
+      }
+    })
+    .catch(() => {
+      dilemmas = fallbackDilemmas;
+      renderTabs();
+      selectDilemma(dilemmas[0]);
+    });
+
+  function renderTabs() {
+    if (!tabsContainer) return;
+    tabsContainer.innerHTML = '';
+    dilemmas.forEach((d, idx) => {
+      const btn = document.createElement('button');
+      btn.className = `matrix-tab-btn text-left p-3 rounded-xl border text-xs font-semibold transition-all flex items-center justify-between ${
+        idx === 0
+          ? 'active border-gold-500 bg-gold-500/15 text-gold-300'
+          : 'border-ocean-800 bg-ocean-950/70 text-slate-300 hover:border-slate-700'
+      }`;
+      btn.innerHTML = `
+        <div class="truncate pr-2">
+          <div class="font-bold text-white truncate">${d.title}</div>
+          <span class="text-[10px] text-slate-400 font-mono">${d.badge}</span>
+        </div>
+        <i data-lucide="chevron-right" class="w-4 h-4 shrink-0 text-slate-500"></i>
+      `;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.matrix-tab-btn').forEach(b => {
+          b.classList.remove('active', 'border-gold-500', 'bg-gold-500/15', 'text-gold-300');
+          b.classList.add('border-ocean-800', 'bg-ocean-950/70', 'text-slate-300');
+        });
+        btn.classList.add('active', 'border-gold-500', 'bg-gold-500/15', 'text-gold-300');
+        btn.classList.remove('border-ocean-800', 'bg-ocean-950/70', 'text-slate-300');
+        selectDilemma(d);
+      });
+      tabsContainer.appendChild(btn);
+    });
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function selectDilemma(d) {
+    activeDilemma = d;
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+      <div class="space-y-6">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              ${d.category}
+            </span>
+            <span class="text-xs text-slate-400 font-mono">• ${d.badge}</span>
+          </div>
+          <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-white mb-2">${d.title}</h3>
+          <p class="text-sm text-slate-300 italic bg-ocean-950/60 p-3 rounded-xl border border-ocean-800">
+            "${d.summary}"
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- 0. Teşhis -->
+          <div class="p-4 rounded-xl bg-sky-950/30 border border-sky-800/40">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-1 flex items-center gap-1.5">
+              <i data-lucide="microscope" class="w-4 h-4"></i> Evrensel Felsefi Teşhis
+            </h4>
+            <p class="text-xs text-slate-300 leading-relaxed">${d.diagnostic}</p>
+          </div>
+
+          <!-- 4 Aşamalı Derya Protokolü -->
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl glass-panel border-l-4 border-purple-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-purple-400 block mb-1">1. Enfüs Aynası (İç Muhasebe)</span>
+              <p class="text-xs text-slate-300 leading-normal">${d.enfus_mirror}</p>
+            </div>
+
+            <div class="p-4 rounded-xl glass-panel border-l-4 border-gold-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-gold-400 block mb-1">2. Lisan-ı Hal Kalkanı (Sükut Sanatı)</span>
+              <p class="text-xs text-slate-300 leading-normal">${d.lisan_i_hal}</p>
+            </div>
+
+            <div class="p-4 rounded-xl glass-panel border-l-4 border-emerald-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block mb-1">3. Eserin İnşası (Deep Work)</span>
+              <p class="text-xs text-slate-300 leading-normal">${d.eser_insasi}</p>
+            </div>
+
+            <div class="p-4 rounded-xl glass-panel border-l-4 border-cyan-500">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-400 block mb-1">4. Merhamet Makamı (Asalet)</span>
+              <p class="text-xs text-slate-300 leading-normal">${d.merhamet_makami}</p>
+            </div>
+          </div>
+
+          <!-- Eylem Listesi -->
+          <div class="p-4 rounded-xl bg-ocean-950/80 border border-ocean-800">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gold-400 mb-2 flex items-center gap-1.5">
+              <i data-lucide="check-square" class="w-4 h-4"></i> Hemen Şimdi Uygulanacak Somut Eylemler
+            </h4>
+            <div class="space-y-2">
+              ${d.action_checklist
+                .map(
+                  (act, i) => `
+                <label class="flex items-start gap-2.5 text-xs text-slate-300 cursor-pointer hover:text-white">
+                  <input type="checkbox" class="accent-gold-500 rounded mt-0.5">
+                  <span>${act}</span>
+                </label>
+              `
+                )
+                .join('')}
+            </div>
+          </div>
+
+          ${
+            d.prescribed_quote
+              ? `
+            <div class="p-3 rounded-xl border border-gold-500/20 bg-gold-500/5 flex items-center justify-between text-xs">
+              <span class="italic text-slate-300">“${d.prescribed_quote.text}” — <b class="text-gold-400">${d.prescribed_quote.author}</b></span>
+            </div>
+          `
+              : ''
+          }
+        </div>
+      </div>
+    `;
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  // Günlüğe Aktarma Butonu
+  if (exportToJournalBtn) {
+    exportToJournalBtn.addEventListener('click', () => {
+      if (!activeDilemma) return;
+      const inputNoise = document.getElementById('journalNoise');
+      const inputWork = document.getElementById('journalWork');
+      const inputMercy = document.getElementById('journalMercy');
+
+      if (inputNoise) inputNoise.value = `${activeDilemma.title} karşısında sükutumu korudum.`;
+      if (inputWork) inputWork.value = activeDilemma.action_checklist[2] || activeDilemma.eser_insasi;
+      if (inputMercy) inputMercy.value = activeDilemma.merhamet_makami;
+
+      const journalSec = document.getElementById('gunluk');
+      if (journalSec) {
+        journalSec.scrollIntoView({ behavior: 'smooth' });
+      }
+      showToast('Vaka reçetesi günlüğe aktarıldı. Kaydetmeyi unutmayın!', 'book-marked');
+    });
+  }
+
+  // Kopyalama Butonu
+  if (copyMatrixBtn) {
+    copyMatrixBtn.addEventListener('click', () => {
+      if (!activeDilemma) return;
+      const text = `[DERYA BULANMAZ - MÜSBET HAREKET MATRİSİ]\nVaka: ${activeDilemma.title}\nTeşhis: ${activeDilemma.diagnostic}\n\n1. Enfüs: ${activeDilemma.enfus_mirror}\n2. Lisan-ı Hal: ${activeDilemma.lisan_i_hal}\n3. Eser: ${activeDilemma.eser_insasi}\n4. Merhamet: ${activeDilemma.merhamet_makami}\n\nEylem Adımları:\n${activeDilemma.action_checklist.map((a, i) => `${i + 1}. ${a}`).join('\n')}`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Vaka çözüm protokolü panoya kopyalandı', 'copy');
+      });
+    });
+  }
+}
+
+/* ==========================================================================
+   6. DERYA SESSİZLİĞİ & ODAK SAYACI (DEEP WORK STATION)
    ========================================================================== */
 function initFocusTimer() {
   const display = document.getElementById('timerDisplay');
   const startBtn = document.getElementById('startTimerBtn');
   const resetBtn = document.getElementById('resetTimerBtn');
-  const zenBtn = document.getElementById('zenModeBtn');
-  const goalInput = document.getElementById('focusGoalInput');
-  const label = document.getElementById('activeFocusLabel');
   const presets = document.querySelectorAll('.time-preset');
+  const goalInput = document.getElementById('focusGoalInput');
+  const activeLabel = document.getElementById('activeFocusLabel');
+  const zenBtn = document.getElementById('zenModeBtn');
+
+  const tabFocus = document.getElementById('tabFocus');
+  const tabBreath = document.getElementById('tabBreath');
+  const focusPanel = document.getElementById('focusPanel');
+  const breathPanel = document.getElementById('breathPanel');
 
   if (!display || !startBtn) return;
 
@@ -547,52 +1050,56 @@ function initFocusTimer() {
   let isRunning = false;
 
   function updateDisplay() {
-    const mins = Math.floor(remainingSeconds / 60);
-    const secs = remainingSeconds % 60;
-    display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    const m = Math.floor(remainingSeconds / 60);
+    const s = remainingSeconds % 60;
+    display.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   }
 
-  function playChime() {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(528, ctx.currentTime); // 528 Hz dönüşüm frekansı
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 3);
-    } catch (e) {
-      console.log('Ses çalınamadı', e);
-    }
-  }
+  presets.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (isRunning) return;
+      presets.forEach(b => {
+        b.classList.remove('active', 'border-gold-500', 'bg-gold-500/20', 'text-gold-300');
+        b.classList.add('border-ocean-700', 'bg-ocean-900', 'text-slate-300');
+      });
+      btn.classList.add('active', 'border-gold-500', 'bg-gold-500/20', 'text-gold-300');
+      btn.classList.remove('border-ocean-700', 'bg-ocean-900', 'text-slate-300');
+
+      const mins = parseInt(btn.dataset.mins, 10);
+      totalSeconds = mins * 60;
+      remainingSeconds = totalSeconds;
+      updateDisplay();
+    });
+  });
 
   function startTimer() {
     if (isRunning) {
       clearInterval(timerInterval);
       isRunning = false;
       startBtn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i> Devam Et';
-      if (label) label.textContent = 'Duraklatıldı: Eser seni bekliyor';
+      if (activeLabel) activeLabel.textContent = 'Duraklatıldı: Zihnin dağılmasına izin verme';
+      showToast('Sayaç duraklatıldı', 'pause');
     } else {
       isRunning = true;
-      startBtn.innerHTML = '<i data-lucide="pause" class="w-4 h-4 fill-current"></i> Duraklat';
-      const goal = goalInput.value.trim() || 'Eserin İnşası';
-      if (label) label.textContent = `Odak: "${goal}" sessizce inşa ediliyor...`;
+      startBtn.innerHTML = '<i data-lucide="pause" class="w-4 h-4"></i> Duraklat';
+      const goal = goalInput && goalInput.value.trim() ? goalInput.value.trim() : 'Hakikati İnşa Etmek';
+      if (activeLabel) activeLabel.textContent = `İnşa Ediliyor: ${goal}`;
+      showToast(`Odak oturumu başladı: ${goal}`, 'hourglass');
 
       timerInterval = setInterval(() => {
-        if (remainingSeconds > 0) {
-          remainingSeconds--;
-          updateDisplay();
-        } else {
+        remainingSeconds--;
+        updateDisplay();
+
+        if (remainingSeconds <= 0) {
           clearInterval(timerInterval);
           isRunning = false;
-          playChime();
-          startBtn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i> Yeni Oturum';
-          if (label) label.textContent = '✨ Tebrikler! Bir eserin taşı daha yerine kondu.';
-          alert('Derya Sessizliği Tamamlandı. Hakikat adına bir taş daha yerine kondu!');
+          startBtn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i> Yeniden Başla';
+          if (activeLabel) activeLabel.textContent = '✨ Muvaffakiyet! Hakikat adına bir taş kondu.';
+          showToast('Oturum tamamlandı! Eserinize sadık kaldınız.', 'check-circle');
+
+          if (window.playWaterSplashChime) {
+            window.playWaterSplashChime();
+          }
         }
       }, 1000);
     }
@@ -605,174 +1112,177 @@ function initFocusTimer() {
     remainingSeconds = totalSeconds;
     updateDisplay();
     startBtn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i> Başla';
-    if (label) label.textContent = 'Hazır: Sükunete adım at';
+    if (activeLabel) activeLabel.textContent = 'Hazır: Sükunete adım at';
     if (window.lucide) lucide.createIcons();
   }
 
   startBtn.addEventListener('click', startTimer);
   if (resetBtn) resetBtn.addEventListener('click', resetTimer);
 
-  presets.forEach(btn => {
-    btn.addEventListener('click', () => {
-      presets.forEach(p => {
-        p.classList.remove('active', 'border-gold-500', 'bg-gold-500/20', 'text-gold-300');
-        p.classList.add('border-ocean-700', 'bg-ocean-900', 'text-slate-300');
-      });
-      btn.classList.add('active', 'border-gold-500', 'bg-gold-500/20', 'text-gold-300');
-      btn.classList.remove('border-ocean-700', 'bg-ocean-900', 'text-slate-300');
-
-      const mins = parseInt(btn.dataset.mins, 10);
-      totalSeconds = mins * 60;
-      resetTimer();
-    });
-  });
-
-  // Zen Modu (Dikkati dağıtan her şeyi gizle / tam ekran)
-  let isZen = false;
+  // Zen Modu Kontrolü
   if (zenBtn) {
     zenBtn.addEventListener('click', () => {
-      isZen = !isZen;
-      const header = document.querySelector('header');
-      const footer = document.querySelector('footer');
+      document.body.classList.toggle('zen-mode-active');
+      const isZen = document.body.classList.contains('zen-mode-active');
       if (isZen) {
-        if (header) header.style.display = 'none';
-        if (footer) footer.style.display = 'none';
-        zenBtn.classList.add('bg-gold-500', 'text-ocean-950');
-        zenBtn.innerHTML = '<i data-lucide="minimize-2" class="w-4 h-4"></i> Çık';
+        showToast('Zen Modu: Tüm dikkat dağıtıcılar gizlendi. Çıkmak için tekrar basın.', 'maximize-2');
+        zenBtn.innerHTML = '<i data-lucide="minimize-2" class="w-4 h-4"></i> Normal Mod';
       } else {
-        if (header) header.style.display = '';
-        if (footer) footer.style.display = '';
-        zenBtn.classList.remove('bg-gold-500', 'text-ocean-950');
+        showToast('Zen Modundan çıkıldı', 'minimize-2');
         zenBtn.innerHTML = '<i data-lucide="maximize-2" class="w-4 h-4"></i> Zen Modu';
       }
       if (window.lucide) lucide.createIcons();
     });
   }
+
+  // Odak & Nefes Tabları
+  if (tabFocus && tabBreath && focusPanel && breathPanel) {
+    tabFocus.addEventListener('click', () => {
+      tabFocus.classList.add('bg-gold-500', 'text-ocean-950', 'shadow');
+      tabFocus.classList.remove('bg-ocean-800', 'text-slate-300');
+      tabBreath.classList.add('bg-ocean-800', 'text-slate-300');
+      tabBreath.classList.remove('bg-gold-500', 'text-ocean-950', 'shadow');
+
+      focusPanel.classList.remove('hidden');
+      breathPanel.classList.add('hidden');
+    });
+
+    tabBreath.addEventListener('click', () => {
+      tabBreath.classList.add('bg-gold-500', 'text-ocean-950', 'shadow');
+      tabBreath.classList.remove('bg-ocean-800', 'text-slate-300');
+      tabFocus.classList.add('bg-ocean-800', 'text-slate-300');
+      tabFocus.classList.remove('bg-gold-500', 'text-ocean-950', 'shadow');
+
+      breathPanel.classList.remove('hidden');
+      focusPanel.classList.add('hidden');
+    });
+  }
+
+  window.toggleFocusTimer = () => {
+    if (startBtn) startBtn.click();
+  };
 }
 
 /* ==========================================================================
-   6. NEFES-İ SÜKUN (4-7-8 RİTMİK NEFES METODU)
+   7. ÇOK MODLU NEFES REHBERİ (4-7-8, KUTU, REZONANS)
    ========================================================================== */
 function initBreathingExercise() {
-  const tabFocus = document.getElementById('tabFocus');
-  const tabBreath = document.getElementById('tabBreath');
-  const focusPanel = document.getElementById('focusPanel');
-  const breathPanel = document.getElementById('breathPanel');
   const circle = document.getElementById('breathCircle');
   const phaseText = document.getElementById('breathPhaseText');
   const counterText = document.getElementById('breathTimerCounter');
   const startBtn = document.getElementById('startBreathBtn');
   const stopBtn = document.getElementById('stopBreathBtn');
+  const patternSelect = document.getElementById('breathPatternSelect');
 
-  if (!tabFocus || !tabBreath || !focusPanel || !breathPanel) return;
-
-  tabFocus.addEventListener('click', () => {
-    tabFocus.classList.add('bg-gold-500', 'text-ocean-950');
-    tabFocus.classList.remove('bg-ocean-800', 'text-slate-300');
-    tabBreath.classList.add('bg-ocean-800', 'text-slate-300');
-    tabBreath.classList.remove('bg-gold-500', 'text-ocean-950');
-    focusPanel.classList.remove('hidden');
-    breathPanel.classList.add('hidden');
-  });
-
-  tabBreath.addEventListener('click', () => {
-    tabBreath.classList.add('bg-gold-500', 'text-ocean-950');
-    tabBreath.classList.remove('bg-ocean-800', 'text-slate-300');
-    tabFocus.classList.add('bg-ocean-800', 'text-slate-300');
-    tabFocus.classList.remove('bg-gold-500', 'text-ocean-950');
-    breathPanel.classList.remove('hidden');
-    focusPanel.classList.add('hidden');
-  });
+  if (!circle || !startBtn) return;
 
   let breathInterval = null;
-  let breathRunning = false;
+  let isBreathing = false;
+  let currentPattern = '478';
 
-  function runBreathCycle() {
-    let phase = 0; // 0: al (4s), 1: tut (7s), 2: ver (8s)
-    let timeLeft = 4;
+  const patterns = {
+    '478': {
+      name: 'Sükun Nefesi (4-7-8)',
+      cssClass: 'breath-478',
+      phases: [
+        { name: 'Nefes Al', dur: 4 },
+        { name: 'Tut', dur: 7 },
+        { name: 'Yavaşça Ver', dur: 8 }
+      ]
+    },
+    'box': {
+      name: 'Kutu Nefesi (4-4-4-4)',
+      cssClass: 'breath-box',
+      phases: [
+        { name: 'Nefes Al', dur: 4 },
+        { name: 'Nefesi Tut', dur: 4 },
+        { name: 'Nefes Ver', dur: 4 },
+        { name: 'Boşlukta Kal', dur: 4 }
+      ]
+    },
+    'resonance': {
+      name: 'Rezonans Nefesi (5-5)',
+      cssClass: 'breath-resonance',
+      phases: [
+        { name: 'Nefes Al', dur: 5 },
+        { name: 'Nefes Ver', dur: 5 }
+      ]
+    }
+  };
 
-    phaseText.textContent = 'Nefes Al';
-    counterText.textContent = `${timeLeft}s`;
-    circle.style.transform = 'scale(1.35)';
+  function startBreathing() {
+    if (isBreathing) return;
+    isBreathing = true;
 
-    breathInterval = setInterval(() => {
-      timeLeft--;
-      if (timeLeft <= 0) {
-        phase = (phase + 1) % 3;
-        if (phase === 0) {
-          timeLeft = 4;
-          phaseText.textContent = 'Nefes Al';
-          circle.style.transform = 'scale(1.35)';
-        } else if (phase === 1) {
-          timeLeft = 7;
-          phaseText.textContent = 'Nefesi Tut';
-          circle.style.transform = 'scale(1.35)';
-        } else {
-          timeLeft = 8;
-          phaseText.textContent = 'Yavaşça Ver';
-          circle.style.transform = 'scale(0.85)';
-        }
+    const p = patterns[currentPattern];
+    circle.classList.remove('breath-478', 'breath-box', 'breath-resonance');
+    circle.classList.add(p.cssClass);
+
+    let phaseIndex = 0;
+    let secInPhase = 0;
+
+    function runPhase() {
+      const cur = p.phases[phaseIndex];
+      if (phaseText) phaseText.textContent = cur.name;
+      if (counterText) counterText.textContent = `${cur.dur - secInPhase}s`;
+
+      if (window.playWaterSplashChime && secInPhase === 0) {
+        window.playWaterSplashChime();
       }
-      counterText.textContent = `${timeLeft}s`;
-    }, 1000);
+
+      secInPhase++;
+      if (secInPhase >= cur.dur) {
+        secInPhase = 0;
+        phaseIndex = (phaseIndex + 1) % p.phases.length;
+      }
+    }
+
+    runPhase();
+    breathInterval = setInterval(runPhase, 1000);
+    showToast(`Nefes egzersizi başladı: ${p.name}`, 'wind');
   }
 
-  if (startBtn && stopBtn) {
-    startBtn.addEventListener('click', () => {
-      if (breathRunning) return;
-      breathRunning = true;
-      runBreathCycle();
-    });
+  function stopBreathing() {
+    clearInterval(breathInterval);
+    isBreathing = false;
+    circle.classList.remove('breath-478', 'breath-box', 'breath-resonance');
+    if (phaseText) phaseText.textContent = 'Başla';
+    if (counterText) counterText.textContent = '--';
+    showToast('Nefes egzersizi durduruldu', 'wind');
+  }
 
-    stopBtn.addEventListener('click', () => {
-      clearInterval(breathInterval);
-      breathRunning = false;
-      phaseText.textContent = 'Hazır';
-      counterText.textContent = '--';
-      circle.style.transform = 'scale(1)';
+  startBtn.addEventListener('click', startBreathing);
+  if (stopBtn) stopBtn.addEventListener('click', stopBreathing);
+
+  if (patternSelect) {
+    patternSelect.addEventListener('change', e => {
+      currentPattern = e.target.value;
+      if (isBreathing) {
+        stopBreathing();
+        startBreathing();
+      }
     });
   }
 }
 
 /* ==========================================================================
-   7. HİKMET SANDIĞI & SOSYAL KART ÜRETİCİ (CANVAS PNG İNDİRME)
+   8. HİKMET SANDIĞI & KART ÜRETİCİSİ (CANVAS 1080x1080 HD)
    ========================================================================== */
 function initQuotesAndCards() {
   const container = document.getElementById('quotesGrid');
   const filterBtns = document.querySelectorAll('.quote-filter-btn');
+  const searchInput = document.getElementById('quoteSearchInput');
   const exportCanvas = document.getElementById('exportCardCanvas');
 
-  // Manifestodaki tüm hakikat incileri (Genişletilmiş 26 Hikmet)
-  let quotesData = [
-    { id: 1, text: 'Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.', author: 'Risale-i Nur Külliyatı', tag: 'derya', theme: 'Metanet & Sarsılmazlık' },
-    { id: 2, text: 'Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok.', author: 'Bediüzzaman Said Nursî', tag: 'ihlas', theme: 'İhlas & Hürriyet' },
-    { id: 3, text: 'İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır.', author: 'Carl Gustav Jung', tag: 'felsefe', theme: 'İçsel Boşluk & Gölge' },
-    { id: 4, text: 'Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır.', author: 'Arthur Schopenhauer', tag: 'felsefe', theme: 'Kesret Kaosu' },
-    { id: 5, text: 'Büyük beyinler fikirleri tartışır, orta beyinler olayları, küçük beyinler insanları tartışır.', author: 'Eleanor Roosevelt', tag: 'felsefe', theme: 'Ufuk & Vizyon' },
-    { id: 6, text: 'Hiçbir şey yapmayanlar, her şeyi eleştirme hakkını kendilerinde bulurlar.', author: 'Jean-Jacques Rousseau', tag: 'felsefe', theme: 'Eylemsizlik' },
-    { id: 7, text: 'Kitle asla en iyi üyelerinin seviyesine çıkamaz; o her zaman en alt seviyedekilerin hizasına inerek dengelenir.', author: 'Friedrich Nietzsche', tag: 'felsefe', theme: 'Sürü Psikolojisi' },
-    { id: 8, text: 'Senin dünyaya bakan penceren kirli ise, benim açan çiçeklerim sana çamur görünür.', author: 'Mevlânâ Celâleddîn-i Rûmî', tag: 'tasavvuf', theme: 'İrfan & Gönül' },
-    { id: 9, text: 'Deniz köpeğin ağzını yıkamasıyla murdar olmaz; güneş bir örümceğin tükürüğüyle kararmaz.', author: 'Mevlânâ Celâleddîn-i Rûmî', tag: 'tasavvuf', theme: 'Hakikatin Saflığı' },
-    { id: 10, text: 'İnsanların seni kınaması veya övmesi senin kalbinde aynı etkiyi bırakmıyorsa, henüz tam bir bağımsızlığa ulaşmamışsındır.', author: 'İbn Ataullah el-İskenderî', tag: 'tasavvuf', theme: 'Kalbi İstiklal' },
-    { id: 11, text: 'Gerçek bağımsızlık, başkalarının senin hakkında ne düşündüğünü umursamayı bıraktığın an başlar.', author: 'Lao Tzu', tag: 'stoa', theme: 'İçsel Huzur' },
-    { id: 12, text: 'En üstün erdem su gibidir. Su her varlığa menfaat sağlar ama hiçbir şeyle çekişmez; herkesin küçümsediği alçak yerlere akar.', author: 'Lao Tzu', tag: 'stoa', theme: 'Wu Wei & Tevazu' },
-    { id: 13, text: 'Sessizlik, en güçlü çığlıktır.', author: 'Sun Tzu', tag: 'derya', theme: 'Lisan-ı Hal' },
-    { id: 14, text: 'Karanlığa sövmektense, bir mum yak.', author: 'Konfüçyüs', tag: 'derya', theme: 'Müsbet Hareket' },
-    { id: 15, text: 'Arı inler bal içinde...', author: 'Anadolu İrfanı', tag: 'tasavvuf', theme: 'Eserin İnşası' },
-    { id: 16, text: 'Dervişlik dedikleri hırka ile taç değil / Gönlün derviş eyleyen hırkaya muhtaç değil.', author: 'Yunus Emre', tag: 'tasavvuf', theme: 'Öz & Hakikat' },
-    { id: 17, text: 'Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Merhamet Makamı' },
-    { id: 18, text: 'Taş havaya fırlatıldığında yükselmekle bir kazanç elde etmez; yere düşmekle de hiçbir şey kaybetmez.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Sarsılmazlık' },
-    { id: 19, text: 'Seni kızdıran şey insanların hareketleri değil; o hareketler hakkında kurduğun kendi yargılarındır.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Zihinsel Zırh' },
-    { id: 20, text: 'Başkalarının hakkımızdaki fikirleri elimizde olmayan şeylerdendir; öyleyse onların kalbimizi incitmesine izin vermemeliyiz.', author: 'Epiktetos', tag: 'stoa', theme: 'Kontrol İkiliği' },
-    { id: 21, text: 'İnsanların tüm eylemlerinin altında tek bir saik yatar: Kederi ve içsel anlamsızlığı kovmak.', author: 'İbn Hazm', tag: 'tasavvuf', theme: 'Nefsin Tahlili' },
-    { id: 22, text: 'Hasetçiyi cezalandırmaya kalkma; zira o zaten senin nimetini her gördüğünde kendi ciğerini dağlamaktadır.', author: 'İmam Gazali', tag: 'tasavvuf', theme: 'Hasedin Çöküşü' },
-    { id: 23, text: 'Bizim vazifemiz müsbet hareket etmektir, menfî hareket değildir. Sırf hizmeti yapmak, vazife-i İlâhiyeye karışmamaktır.', author: 'Bediüzzaman Said Nursî', tag: 'ihlas', theme: 'Müsbet Hareket' },
-    { id: 24, text: 'İnsanlar neyi arzulayacaklarını diğer insanları taklit ederek öğrenirler. Bu taklitçi arzu çatışma ve linç doğurur.', author: 'René Girard', tag: 'felsefe', theme: 'Mimetik Linç' },
-    { id: 25, text: 'Hınç (Ressentiment), yaratıcı eylem gücünden yoksun olanların, üretenlere karşı beslediği sinsi zehirdir.', author: 'Friedrich Nietzsche', tag: 'felsefe', theme: 'Hınç Psikolojisi' },
-    { id: 26, text: 'Sessizlik, ruhun kendi derinliklerine inip hakikatle yüzleştiği tek mukaddes atölyedir.', author: 'Søren Kierkegaard', tag: 'felsefe', theme: 'Sükunetin Gücü' }
-  ];
+  let quotesData = [];
+  let currentFilter = 'all';
+  let searchQuery = '';
+  let favorites = JSON.parse(localStorage.getItem('derya_favorites') || '[]');
 
-  // data/quotes.json dosyasından asenkron yüklemeyi de dene
+  function saveFavorites() {
+    localStorage.setItem('derya_favorites', JSON.stringify(favorites));
+  }
+
   fetch('./data/quotes.json')
     .then(res => res.json())
     .then(data => {
@@ -782,23 +1292,61 @@ function initQuotesAndCards() {
       }
     })
     .catch(() => {
-      // Yerel dosya sistemi (file://) ise gömülü liste zaten devrededir
+      // Yerel dosya sistemi (file://) ise temel veriyle render et
+      quotesData = [
+        { id: 1, text: 'Ehl-i dalâletin ve gafletin tahkiriyle sarsılma. Bir divane çamur atsa, derya bulanmaz.', author: 'Risale-i Nur Külliyatı', tag: 'derya', theme: 'Metanet & Sarsılmazlık' },
+        { id: 2, text: 'Amelinizde rıza-yı İlâhî olmalı. Eğer O razı olsa, bütün dünya küsse ehemmiyeti yok.', author: 'Bediüzzaman Said Nursî', tag: 'ihlas', theme: 'İhlas & Hürriyet' },
+        { id: 3, text: 'İnsanın en büyük zindanı, kendi içinde inşa ettiği amaçsızlıktır.', author: 'Carl Gustav Jung', tag: 'felsefe', theme: 'İçsel Boşluk & Gölge' },
+        { id: 4, text: 'Başkalarının hayatıyla aşırı ilgilenenler, kendi hayatlarındaki dayanılmaz boşluktan kaçanlardır.', author: 'Arthur Schopenhauer', tag: 'felsefe', theme: 'Kesret Kaosu' },
+        { id: 5, text: 'Kötülüğe karşı verilecek en iyi cevap, onlara benzememektir.', author: 'Marcus Aurelius', tag: 'stoa', theme: 'Merhamet Makamı' }
+      ];
+      renderCards();
     });
 
-  function renderCards(filter = 'all') {
+  function renderCards() {
     if (!container) return;
     container.innerHTML = '';
 
-    const filtered = filter === 'all' ? quotesData : quotesData.filter(q => q.tag === filter);
+    let filtered = quotesData;
+
+    if (currentFilter === 'fav') {
+      filtered = filtered.filter(q => favorites.includes(q.id));
+    } else if (currentFilter !== 'all') {
+      filtered = filtered.filter(q => q.tag === currentFilter);
+    }
+
+    if (searchQuery.trim()) {
+      const qLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        q =>
+          q.text.toLowerCase().includes(qLower) ||
+          q.author.toLowerCase().includes(qLower) ||
+          q.theme.toLowerCase().includes(qLower)
+      );
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full py-12 text-center text-slate-500">
+          <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+          <p>Kriterlere uygun hikmet aforizması bulunamadı.</p>
+        </div>
+      `;
+      if (window.lucide) lucide.createIcons();
+      return;
+    }
 
     filtered.forEach(quote => {
+      const isFav = favorites.includes(quote.id);
       const card = document.createElement('div');
       card.className = 'glass-panel p-6 rounded-2xl flex flex-col justify-between hover:border-gold-500/40 transition-all group';
       card.innerHTML = `
         <div>
           <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
-            <span class="px-2 py-0.5 rounded bg-ocean-800 font-mono">${quote.theme}</span>
-            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-gold-400 opacity-60"></i>
+            <span class="px-2 py-0.5 rounded bg-ocean-800 font-mono text-gold-300/90 text-[11px]">${quote.theme}</span>
+            <button class="fav-quote-btn text-slate-500 hover:text-gold-400 transition-colors p-1" data-id="${quote.id}" title="${isFav ? 'Favorilerden çıkar' : 'Favorilere ekle'}">
+              <i data-lucide="star" class="w-4 h-4 ${isFav ? 'fill-gold-400 text-gold-400' : ''}"></i>
+            </button>
           </div>
           <p class="font-serif-reading text-slate-200 text-base leading-relaxed mb-4 italic">
             "${quote.text}"
@@ -806,9 +1354,14 @@ function initQuotesAndCards() {
         </div>
         <div class="border-t border-ocean-800 pt-3 flex items-center justify-between">
           <span class="text-xs font-semibold text-gold-400 font-sans">— ${quote.author}</span>
-          <button class="download-card-btn p-1.5 rounded-lg hover:bg-ocean-800 text-slate-400 hover:text-gold-400 transition-colors" title="Görsel Kart Olarak İndir" data-id="${quote.id}">
-            <i data-lucide="download" class="w-4 h-4"></i>
-          </button>
+          <div class="flex items-center gap-1">
+            <button class="copy-quote-btn p-1.5 rounded-lg hover:bg-ocean-800 text-slate-400 hover:text-sky-400 transition-colors" title="Metni Kopyala" data-id="${quote.id}">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            </button>
+            <button class="download-card-btn p-1.5 rounded-lg hover:bg-ocean-800 text-slate-400 hover:text-gold-400 transition-colors" title="HD Görsel Kart İndir (1080x1080)" data-id="${quote.id}">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
         </div>
       `;
       container.appendChild(card);
@@ -816,12 +1369,41 @@ function initQuotesAndCards() {
 
     if (window.lucide) lucide.createIcons();
 
-    // Kart İndirme Butonları Olay Dinleyicisi
+    // Kart İndirme
     document.querySelectorAll('.download-card-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = parseInt(btn.dataset.id, 10);
         const item = quotesData.find(q => q.id === id);
         if (item) generateAndDownloadCard(item);
+      });
+    });
+
+    // Metin Kopyalama
+    document.querySelectorAll('.copy-quote-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id, 10);
+        const item = quotesData.find(q => q.id === id);
+        if (item) {
+          navigator.clipboard.writeText(`"${item.text}"\n— ${item.author} [${item.theme}]`).then(() => {
+            showToast('Hikmet sözü panoya kopyalandı', 'copy');
+          });
+        }
+      });
+    });
+
+    // Favorileme
+    document.querySelectorAll('.fav-quote-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id, 10);
+        if (favorites.includes(id)) {
+          favorites = favorites.filter(f => f !== id);
+          showToast('Favorilerden kaldırıldı', 'star-off');
+        } else {
+          favorites.push(id);
+          showToast('Favorilere eklendi', 'star');
+        }
+        saveFavorites();
+        renderCards();
       });
     });
   }
@@ -835,13 +1417,20 @@ function initQuotesAndCards() {
       });
       btn.classList.add('active', 'border-gold-500', 'bg-gold-500/20', 'text-gold-300');
       btn.classList.remove('border-ocean-700', 'bg-ocean-850', 'text-slate-300');
-      renderCards(btn.dataset.filter);
+      currentFilter = btn.dataset.filter;
+      renderCards();
     });
   });
 
-  renderCards();
+  // Arama Girişi
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      searchQuery = e.target.value;
+      renderCards();
+    });
+  }
 
-  // Canvas ile 1080x1080 HD Sosyal Medya Kartı Üretimi
+  // Canvas ile 1080x1080 HD Sosyal Medya Kartı
   function generateAndDownloadCard(item) {
     if (!exportCanvas) return;
     const ctx = exportCanvas.getContext('2d');
@@ -849,7 +1438,6 @@ function initQuotesAndCards() {
     exportCanvas.width = size;
     exportCanvas.height = size;
 
-    // Arka Plan Radyal Gradyan
     const bgGrad = ctx.createRadialGradient(size / 2, size / 2, 50, size / 2, size / 2, size / 1.2);
     bgGrad.addColorStop(0, '#0c172a');
     bgGrad.addColorStop(0.7, '#070d18');
@@ -857,7 +1445,7 @@ function initQuotesAndCards() {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, size, size);
 
-    // İnce Altın Çerçeve
+    // Altın Çerçeve
     ctx.strokeStyle = '#e2b168';
     ctx.lineWidth = 4;
     ctx.strokeRect(50, 50, size - 100, size - 100);
@@ -881,7 +1469,7 @@ function initQuotesAndCards() {
     ctx.fillStyle = 'rgba(226, 177, 104, 0.15)';
     ctx.fillText('“', size / 2, 280);
 
-    // Alıntı Metnini Otomatik Satırlara Böl
+    // Alıntı Metni
     ctx.font = 'italic 38px "Playfair Display", Georgia, serif';
     ctx.fillStyle = '#f8fafc';
     ctx.textAlign = 'center';
@@ -904,99 +1492,108 @@ function initQuotesAndCards() {
     }
     lines.push(line);
 
-    // Metni dikeyde ortala
     const startY = size / 2 - ((lines.length - 1) * lineHeight) / 2 - 20;
     for (let j = 0; j < lines.length; j++) {
       ctx.fillText(lines[j], size / 2, startY + j * lineHeight);
     }
 
-    // Müellif / İsim
+    // Yazar
     ctx.font = 'bold 26px sans-serif';
     ctx.fillStyle = '#e2b168';
     ctx.fillText(`— ${item.author}`, size / 2, startY + lines.length * lineHeight + 60);
 
-    // Tema etiketi
+    // Tema
     ctx.font = '16px sans-serif';
     ctx.fillStyle = '#38bdf8';
     ctx.fillText(`[ ${item.theme} ]`, size / 2, startY + lines.length * lineHeight + 100);
 
-    // Alt Filigran
+    // Filigran
     ctx.font = '14px sans-serif';
     ctx.fillStyle = '#64748b';
     ctx.fillText('derya-bulanmaz.org  •  github.com/bahattinyunus/Derya-Bulanmaz', size / 2, size - 85);
 
-    // PNG İndirme
     const image = exportCanvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.download = `derya-bulanmaz-${item.id}.png`;
     link.href = image;
     link.click();
+    showToast('HD Kart başarıyla indirildi', 'image');
   }
 }
 
 /* ==========================================================================
-   8. MÜSBET ESER GÜNLÜĞÜ (LOCALSTORAGE DESTEKLİ TEFEKKÜR KAYDI)
+   9. MÜSBET ESER GÜNLÜĞÜ (LOCALSTORAGE DESTEKLİ TEFEKKÜR KAYDI & YEDEKLEME)
    ========================================================================== */
 function initJournal() {
   const saveBtn = document.getElementById('saveJournalBtn');
   const exportMdBtn = document.getElementById('exportJournalMdBtn');
+  const exportJsonBtn = document.getElementById('exportJournalJsonBtn');
+  const importJsonBtn = document.getElementById('importJournalJsonBtn');
   const clearBtn = document.getElementById('clearJournalBtn');
   const list = document.getElementById('journalEntriesList');
 
   const inputNoise = document.getElementById('journalNoise');
   const inputWork = document.getElementById('journalWork');
   const inputMercy = document.getElementById('journalMercy');
+  const tagSelect = document.getElementById('journalTagSelect');
 
   const STORAGE_KEY = 'derya_journal_entries';
+  let entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-  function getEntries() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    } catch {
-      return [];
-    }
+  function saveToStorage() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
   }
 
   function renderEntries() {
     if (!list) return;
-    const entries = getEntries();
+    list.innerHTML = '';
+
     if (entries.length === 0) {
       list.innerHTML = '<p class="text-xs text-slate-500 italic">Henüz bir kayıt bulunmuyor. İlk tefekkürünüzü yukarıdan kaydedin.</p>';
       return;
     }
 
-    list.innerHTML = '';
-    entries.forEach((e, idx) => {
+    entries.slice().reverse().forEach(entry => {
       const item = document.createElement('div');
-      item.className = 'p-3.5 rounded-xl bg-ocean-950/70 border border-ocean-800 text-xs text-slate-300 space-y-1.5';
+      item.className = 'p-3.5 rounded-xl bg-ocean-950/70 border border-ocean-800 text-xs space-y-1.5 relative group';
       item.innerHTML = `
-        <div class="flex items-center justify-between font-mono text-[10px] text-gold-400">
-          <span>📅 ${e.date}</span>
-          <button class="delete-entry-btn text-red-400 hover:text-red-300" data-idx="${idx}">Sil</button>
+        <div class="flex items-center justify-between text-slate-400">
+          <span class="font-mono text-[11px] text-gold-400">${entry.date}</span>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-ocean-800 text-[10px] text-slate-300 font-mono">#${entry.tag || 'Tefekkür'}</span>
+            <button class="delete-entry-btn opacity-0 group-hover:opacity-100 text-slate-500 hover:text-red-400 transition-opacity p-0.5" data-id="${entry.id}">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
         </div>
-        ${e.noise ? `<p><strong class="text-sky-300">Duymazdan Gelinen Gürültü:</strong> ${e.noise}</p>` : ''}
-        ${e.work ? `<p><strong class="text-gold-300">İnşa Edilen Eser:</strong> ${e.work}</p>` : ''}
-        ${e.mercy ? `<p><strong class="text-emerald-300">Merhamet Notu:</strong> ${e.mercy}</p>` : ''}
+        ${entry.noise ? `<p><b class="text-sky-300">Gürültü:</b> ${entry.noise}</p>` : ''}
+        ${entry.work ? `<p><b class="text-gold-300">İnşa Edilen Eser:</b> ${entry.work}</p>` : ''}
+        ${entry.mercy ? `<p><b class="text-emerald-300">Merhamet:</b> ${entry.mercy}</p>` : ''}
       `;
       list.appendChild(item);
     });
 
+    if (window.lucide) lucide.createIcons();
+
     document.querySelectorAll('.delete-entry-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const idx = parseInt(btn.dataset.idx, 10);
-        const current = getEntries();
-        current.splice(idx, 1);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
-        renderEntries();
+        const id = parseInt(btn.dataset.id, 10);
+        if (confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
+          entries = entries.filter(e => e.id !== id);
+          saveToStorage();
+          renderEntries();
+          showToast('Kayıt silindi', 'trash-2');
+        }
       });
     });
   }
 
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      const noise = inputNoise.value.trim();
-      const work = inputWork.value.trim();
-      const mercy = inputMercy.value.trim();
+      const noise = inputNoise ? inputNoise.value.trim() : '';
+      const work = inputWork ? inputWork.value.trim() : '';
+      const mercy = inputMercy ? inputMercy.value.trim() : '';
+      const tag = tagSelect ? tagSelect.value : 'Tefekkür';
 
       if (!noise && !work && !mercy) {
         alert('Lütfen en az bir alanı doldurunuz.');
@@ -1004,57 +1601,110 @@ function initJournal() {
       }
 
       const newEntry = {
-        date: new Date().toLocaleString('tr-TR', { dateStyle: 'medium', timeStyle: 'short' }),
+        id: Date.now(),
+        date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
         noise,
         work,
-        mercy
+        mercy,
+        tag
       };
 
-      const entries = getEntries();
-      entries.unshift(newEntry);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-      inputNoise.value = '';
-      inputWork.value = '';
-      inputMercy.value = '';
-
+      entries.push(newEntry);
+      saveToStorage();
       renderEntries();
+
+      if (inputNoise) inputNoise.value = '';
+      if (inputWork) inputWork.value = '';
+      if (inputMercy) inputMercy.value = '';
+
+      showToast('Günün tefekkür kaydı kaydedildi!', 'check');
     });
   }
 
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      if (confirm('Tüm günlük kayıtlarınız silinsin mi? Bu işlem geri alınamaz.')) {
-        localStorage.removeItem(STORAGE_KEY);
-        renderEntries();
-      }
-    });
-  }
-
+  // Markdown İndirme
   if (exportMdBtn) {
     exportMdBtn.addEventListener('click', () => {
-      const entries = getEntries();
       if (entries.length === 0) {
-        alert('Dışa aktarılacak kayıt bulunmuyor.');
+        alert('İndirilecek kayıt bulunmuyor.');
         return;
       }
-
-      let md = '# Derya Bulanmaz — Müsbet Eser Günlüğü\n\n';
+      let md = `# 🌊 Derya Bulanmaz - Müsbet Eser Günlüğü\n*Oluşturulma: ${new Date().toLocaleString('tr-TR')}*\n\n---\n\n`;
       entries.forEach(e => {
-        md += `### ${e.date}\n`;
-        if (e.noise) md += `- **Duymazdan Gelinen Gürültü:** ${e.noise}\n`;
+        md += `### 📅 ${e.date}  [#${e.tag || 'Tefekkür'}]\n`;
+        if (e.noise) md += `- **Duyulmayan Gürültü:** ${e.noise}\n`;
         if (e.work) md += `- **İnşa Edilen Eser:** ${e.work}\n`;
-        if (e.mercy) md += `- **Merhamet Notu:** ${e.mercy}\n`;
-        md += '\n---\n\n';
+        if (e.mercy) md += `- **Merhamet Makamı:** ${e.mercy}\n`;
+        md += `\n---\n\n`;
       });
 
       const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `derya-gunluk-${new Date().toISOString().slice(0, 10)}.md`;
+      a.download = `derya-gunluk-${Date.now()}.md`;
       a.click();
       URL.revokeObjectURL(url);
+      showToast('Günlük Markdown formatında indirildi', 'file-text');
+    });
+  }
+
+  // JSON Yedek İndirme
+  if (exportJsonBtn) {
+    exportJsonBtn.addEventListener('click', () => {
+      if (entries.length === 0) {
+        alert('Yedeklenecek kayıt bulunmuyor.');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `derya-gunluk-yedek-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('JSON yedeği indirildi', 'download');
+    });
+  }
+
+  // JSON Yedek Yükleme
+  if (importJsonBtn) {
+    importJsonBtn.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            if (Array.isArray(data)) {
+              entries = data;
+              saveToStorage();
+              renderEntries();
+              showToast(`Yedek başarıyla yüklendi (${data.length} kayıt)`, 'check');
+            } else {
+              alert('Geçersiz JSON formatı.');
+            }
+          } catch (err) {
+            alert('Dosya okunamadı: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Tüm günlük kayıtlarını silmek istediğinize emin misiniz?')) {
+        entries = [];
+        saveToStorage();
+        renderEntries();
+        showToast('Günlük temizlendi', 'trash');
+      }
     });
   }
 
@@ -1062,7 +1712,7 @@ function initJournal() {
 }
 
 /* ==========================================================================
-   9. İHLAS & METANET SKALASI (ÖZ DEĞERLENDİRME TESTİ)
+   10. İHLAS & METANET SKALASI (10 SORULUK DETAYLI TEŞHİS)
    ========================================================================== */
 function initQuiz() {
   const container = document.getElementById('quizQuestions');
@@ -1076,15 +1726,15 @@ function initQuiz() {
 
   const questions = [
     {
-      q: '1. Bir projenizi sosyal medyada paylaştığınızda gelen ilk eleştiri veya alayda ilk hissiniz ne olur?',
+      q: '1. Bir eserinizi veya fikrinizi paylaştığınızda gelen ilk eleştiri veya alayda kalbinizin ilk refleksi nedir?',
       options: [
-        { text: 'Hemen öfkelenir, savunmaya geçer veya karşı tarafa laf yetiştiririm.', score: 0 },
+        { text: 'Hemen öfkelenir, savunmaya geçer veya laf yetiştiririm.', score: 0 },
         { text: 'İçim sıkılır, biraz canım yanar ama yine de susmaya çalışırım.', score: 2 },
-        { text: 'Gülümserim; "bir divane çamur attı" der, işime devam ederim.', score: 4 }
+        { text: 'Tebessüm ederim; "bir divane çamur attı" der, işime devam ederim.', score: 4 }
       ]
     },
     {
-      q: '2. Çevrenizden büyük bir iltifat ve alkış aldığınızda kalbinizin durumu nedir?',
+      q: '2. Çevrenizden büyük bir iltifat, beğeni ve alkış aldığınızda kalbinizin durumu nedir?',
       options: [
         { text: 'Kendimi üstün hisseder, başkalarının takdirine bağımlı hale gelirim.', score: 0 },
         { text: 'Hoşuma gider ama çok şımarmamaya dikkat ederim.', score: 2 },
@@ -1092,7 +1742,7 @@ function initQuiz() {
       ]
     },
     {
-      q: '3. Hiçbir takdir veya para almayacağınızı bilseniz bile o eseri inşa eder miydiniz?',
+      q: '3. Hiçbir takdir, para veya unvan almayacağınızı bilseniz bile o eseri inşa eder miydiniz?',
       options: [
         { text: 'Kesinlikle hayır; kimse görmeyecekse neden yorulayım?', score: 0 },
         { text: 'Emin değilim, dış motivasyon olmadan zorlanırım.', score: 2 },
@@ -1114,6 +1764,14 @@ function initQuiz() {
         { text: 'Bazen kendimi kaptırıyorum ama sonra vicdanen rahatsız oluyorum.', score: 2 },
         { text: 'Hiç ilgilenmem; "büyük beyinler fikirleri inşa eder" düsturuyla yaşarım.', score: 4 }
       ]
+    },
+    {
+      q: '6. Emek verip geliştirdiğiniz bir fikir başkası tarafından taklit edildiğinde ne hissedersiniz?',
+      options: [
+        { text: 'Çılgına döner, onu herkese ifşa etmeye çalışırım.', score: 0 },
+        { text: 'Hakkımın yenmesine üzülürüm ama bir süre sonra geçer.', score: 2 },
+        { text: 'Gülümserim; "kaynak bende oldukça taklit eden tükenir" der, Sürüm 2\'yi yazarım.', score: 4 }
+      ]
     }
   ];
 
@@ -1125,7 +1783,7 @@ function initQuiz() {
       <div class="space-y-2">
         ${q.options
           .map(
-            (opt, oIdx) => `
+            opt => `
           <label class="flex items-center space-x-3 p-3 rounded-xl bg-ocean-950/60 border border-ocean-800/60 hover:border-gold-500/40 cursor-pointer transition-colors text-xs text-slate-300">
             <input type="radio" name="q_${qIdx}" value="${opt.score}" class="accent-gold-500 text-gold-500 focus:ring-0">
             <span>${opt.text}</span>
@@ -1157,14 +1815,15 @@ function initQuiz() {
     }
 
     resultDiv.classList.remove('hidden');
+    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    if (totalScore >= 16) {
+    if (totalScore >= 20) {
       title.textContent = '🌊 Derya-yı Bî-Pâyan (Sarsılmaz Okyanus)';
       desc.textContent =
         'Tebrikler! Kalbiniz kesretin ve kalabalıkların dedikodusundan sıyrılmış. Övgü ve yergiyi eşitlemiş, ihlas zırhını kuşanmışsınız. Eserinizi sessizlikte inşa etmeye devam edin; atılan hiçbir çamur sizin suyunuzu bulandıramaz.';
       badge.textContent = 'Sarsılmazlık Seviyesi: %90+';
       badge.className = 'inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gold-500 text-ocean-950';
-    } else if (totalScore >= 10) {
+    } else if (totalScore >= 12) {
       title.textContent = '💧 Berrak Göl (Durulan Zihin)';
       desc.textContent =
         'Hakikat yolundasınız ancak dış dünyanın gürültüsü ve onaylanma arzusu zaman zaman yüzeyinizi dalgalandırıyor. Lisan-ı hal ile susmayı ve merhamet makamını daha derin tefekkür etmeye ihtiyacınız var.';
@@ -1181,20 +1840,80 @@ function initQuiz() {
 }
 
 /* ==========================================================================
-   10. MOBİL MENÜ KONTROLÜ
+   11. KLAVYE KISAYOLLARI MODAL'I & DİNLENMESİ
+   ========================================================================== */
+function initKeyboardShortcuts() {
+  const modal = document.getElementById('shortcutsModal');
+  const openBtn = document.getElementById('shortcutsModalBtn');
+  const closeBtn = document.getElementById('closeShortcutsModalBtn');
+
+  function toggleModal() {
+    if (!modal) return;
+    modal.classList.toggle('hidden');
+  }
+
+  if (openBtn) openBtn.addEventListener('click', toggleModal);
+  if (closeBtn) closeBtn.addEventListener('click', toggleModal);
+  if (modal) {
+    modal.addEventListener('click', e => {
+      if (e.target === modal) toggleModal();
+    });
+  }
+
+  window.addEventListener('keydown', e => {
+    // Input içindeyse kısayolları engelle
+    if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+    if (e.key === '?' || (e.key === '/' && e.shiftKey)) {
+      toggleModal();
+    } else if (e.key.toLowerCase() === 'm') {
+      if (window.toggleAudioMute) window.toggleAudioMute();
+    } else if (e.key.toLowerCase() === 't') {
+      if (window.toggleNextTheme) window.toggleNextTheme();
+    } else if (e.code === 'Space') {
+      e.preventDefault();
+      if (window.toggleFocusTimer) window.toggleFocusTimer();
+    } else if (e.key.toLowerCase() === 'z') {
+      const zenBtn = document.getElementById('zenModeBtn');
+      if (zenBtn) zenBtn.click();
+    }
+  });
+}
+
+/* ==========================================================================
+   12. MOBİL MENÜ KONTROLÜ
    ========================================================================== */
 function initMobileMenu() {
-  const btn = document.getElementById('mobileMenuBtn');
+  const menuBtn = document.getElementById('mobileMenuBtn');
   const menu = document.getElementById('mobileMenu');
-  if (!btn || !menu) return;
 
-  btn.addEventListener('click', () => {
-    menu.classList.toggle('hidden');
-  });
-
-  menu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      menu.classList.add('hidden');
+  if (menuBtn && menu) {
+    menuBtn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
     });
-  });
+
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+      });
+    });
+  }
+}
+
+/* ==========================================================================
+   13. SERVICE WORKER KAYDI (PWA / ÇEVRİMDIŞI)
+   ========================================================================== */
+function initServiceWorker() {
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('./sw.js')
+        .then(reg => {
+          console.log('Derya Bulanmaz SW devrede:', reg.scope);
+        })
+        .catch(err => {
+          console.warn('SW kaydı başarısız:', err);
+        });
+    });
+  }
 }
